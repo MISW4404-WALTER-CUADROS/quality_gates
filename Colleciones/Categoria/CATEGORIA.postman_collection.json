@@ -1,0 +1,1196 @@
+{
+	"info": {
+		"_postman_id": "099b99a4-ded8-4bb2-b162-601ca2dcb0e2",
+		"name": "CATEGORIA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26687890",
+		"_collection_link": "https://www.postman.com/sw-nube-uniandes/workspace/api-desing/collection/26687890-099b99a4-ded8-4bb2-b162-601ca2dcb0e2?action=share&source=collection_link&creator=26687890"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"token\", data.token);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"admin\",\n    \"password\":\"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/usuarios/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"usuarios",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear una categoria",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()\r",
+							"pm.globals.set(\"id_categoria\", data.id);\r",
+							"\r",
+							"pm.test(\"201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Cada categoría tiene 'id'\", function () {\r",
+							"    pm.response.to.have.property('id');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Grano\",\r\n    \"descripcion\": \"Los granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/categorias",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"categorias"
+					]
+				},
+				"description": "Crear una receta, dentro del cuerpo del request se incluyen los campos necesarios para crear una receta"
+			},
+			"response": [
+				{
+					"name": "Crear una categoria",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Grano\",\r\n    \"descripción\": \"Los granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/categorias",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"14f05d0e-1275-11ed-861d-0242ac120003\",\n    \"name\": \"Grano\",\n    \"description\": \"Los granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\n}\n"
+				},
+				{
+					"name": "Error no se cumplen con los parametros",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripción\": \"Los granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/categorias",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": "{\r\n    \"message\": [\r\n        \"property descripción should not exist\",\r\n        \"El campo nombre no debe estar vacío\",\r\n        \"El campo nombre debe ser un string\",\r\n        \"descripcion must be a string\"\r\n    ],\r\n    \"error\": \"Bad Request\",\r\n    \"statusCode\": 400\r\n}"
+				},
+				{
+					"name": "Error en la creación de una categoria",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Grano\",\r\n    \"descripcion\": \"Los granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo crear el recurso debido a un error del servidor.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener todas las categorias",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Numero total de categorias > 0', function () {\r",
+							"   var data = pm.response.json()\r",
+							"   pm.expect(data.length).to.greaterThan(0)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta es un array\", function () {\r",
+							"   pm.expect(pm.response.json()).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Cada categoría tiene 'id' y 'nombre'\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   data.forEach(function (category) {\r",
+							"       pm.expect(category).to.have.property('id');\r",
+							"       pm.expect(category).to.have.property('nombre');\r",
+							"   });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/categorias",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"categorias"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener todas las categorias",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/categorias",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "[\r\n   {\r\n       \"id\": \"819e7da4-96f4-4c45-81fc-1e5416544598\",\r\n       \"nombre\": \"Arroz\",\r\n       \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n       \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n       \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\r\n   },\r\n   {\r\n       \"id\": \"14f05d0e-1275-11ed-861d-0242ac120002\",\r\n       \"nombre\": \"Mariscos\",\r\n       \"descripcion\": \"Los mariscos incluyen una amplia variedad de organismos marinos como camarones, mejillones, y cangrejos. Son una fuente importante de proteínas y nutrientes, y son altamente apreciados en la gastronomía por su sabor único y su capacidad de adaptarse a diversas preparaciones culinarias.\",\r\n       \"historia\": \"El consumo de mariscos se remonta a tiempos prehistóricos, cuando las comunidades costeras los recolectaban para su alimentación. Hoy en día, los mariscos son una delicadeza global, presente en las cocinas de todo el mundo, con una fuerte tradición en países con acceso a costas ricas en biodiversidad marina.\",\r\n       \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120004\"\r\n   }\r\n]\r\n"
+				},
+				{
+					"name": "Error en obtener todas las categorias",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/categorias",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener categoria por id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene 'id' y 'nombre'\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData).to.have.property('nombre');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El 'id' de la categoría es correcto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    console.log(jsonData)\r",
+							"    console.log(pm.globals.get(\"id_categoria\"))\r",
+							"    console.log(pm.variables.get(\"id_categoria\"))\r",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"id_categoria\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El campo 'nombre' no está vacío\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.nombre).to.not.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/categorias/{{id_categoria}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"categorias",
+						"{{id_categoria}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener categoria por id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categorias/14f05d0e-1275-11ed-861d-0242ac120003",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categorias",
+								"14f05d0e-1275-11ed-861d-0242ac120003"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"id\": \"14f05d0e-1275-11ed-861d-0242ac120003\",\r\n    \"name\": \"Grano\",\r\n    \"description\": \"Los granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\r\n}\r\n"
+				},
+				{
+					"name": "Error en obtener categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/categorias/14f05d0e-1275-11ed-861d-0242ac120003",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias",
+								"14f05d0e-1275-11ed-861d-0242ac120003"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\r\n}"
+				},
+				{
+					"name": "Error en obtener una categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/categorias/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categorias",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe una categoria con ese id\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener categoria que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"No existe una categoria con ese id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/categorias/{{id_categoria_que_no_existe}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"categorias",
+						"{{id_categoria_que_no_existe}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Error en obtener categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/categorias/14f05d0e-1275-11ed-861d-0242ac120003",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias",
+								"14f05d0e-1275-11ed-861d-0242ac120003"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\r\n}"
+				},
+				{
+					"name": "Error en obtener una categoria que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/categorias/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categorias",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe una categoria con ese id\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar categoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene 'id' y 'nombre'\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData).to.have.property('nombre');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El 'id' de la categoría es correcto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    console.log(jsonData)\r",
+							"    console.log(pm.globals.get(\"id_categoria\"))\r",
+							"    console.log(pm.variables.get(\"id_categoria\"))\r",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"id_categoria\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El campo 'nombre' no está vacío\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.nombre).to.not.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Grano\",\r\n    \"descripcion\": \"Los granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/categorias/{{id_categoria}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"categorias",
+						"{{id_categoria}}"
+					]
+				},
+				"description": "Actualizar una receta usando el id de la receta"
+			},
+			"response": [
+				{
+					"name": "Actualizar categoria",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Grano1\",\r\n    \"descripcion\": \"Los1 granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/categorias/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"nombre\": \"Grano1\",\n    \"descripcion\": \"Los1 granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\n}"
+				},
+				{
+					"name": "Error en actualizar una categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/categorias/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe una categoria con ese id\"\r\n}"
+				},
+				{
+					"name": "Error Interno al actualizar una categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/categorias/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo actualizar el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar una categoria que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"No existe una categoria con ese id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Granos\",\r\n    \"descripcion\": \"Los granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/categorias/{{id_categoria_que_no_existe}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"categorias",
+						"{{id_categoria_que_no_existe}}"
+					]
+				},
+				"description": "Actualizar una receta usando el id de la receta"
+			},
+			"response": [
+				{
+					"name": "Error en actualizar una categoria que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/categorias/{{id_categoria_que_no_existe}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias",
+								"{{id_categoria_que_no_existe}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe una categoria con ese id\"\r\n}"
+				},
+				{
+					"name": "Error Interno al actualizar una categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/categorias/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo actualizar el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Borrar categoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 or 204\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/categorias/{{id_categoria}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"categorias",
+						"{{id_categoria}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Error al borrar una categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/categorias/{{id_categoria_que_no_existe}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categorias",
+								"{{id_categoria_que_no_existe}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe una categoria con ese id\"\r\n}"
+				},
+				{
+					"name": "Error Interno al borrar una categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/categorias/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo actualizar el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Borrar una categoria que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"No existe una categoria con ese id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/categorias/{{id_categoria_que_no_existe}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"categorias",
+						"{{id_categoria_que_no_existe}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Error al borrar una categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/categorias/{{id_categoria_que_no_existe}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categorias",
+								"{{id_categoria_que_no_existe}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe una categoria con ese id\"\r\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:3000/api/v1"
+		},
+		{
+			"key": "id_categoria_que_no_existe",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		}
+	]
+}

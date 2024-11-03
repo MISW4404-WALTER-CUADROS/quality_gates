@@ -1,0 +1,2379 @@
+{
+	"info": {
+		"_postman_id": "c9952b5f-14c1-483f-91df-31e23ab79255",
+		"name": "RECETAS - ASOCIACIONES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29491980"
+	},
+	"item": [
+		{
+			"name": "Operaciones recetas",
+			"item": [
+				{
+					"name": "Crear una receta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json()\r",
+									"pm.globals.set(\"receta_id\", data.id);\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"   pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Escapar caracteres especiales\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"const nombreReceta = escapeJSON(pm.variables.replaceIn('{{$randomWords}}'));\r",
+									"const descripcionReceta =  escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}'));\r",
+									"const fotoReceta = escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}'));\r",
+									"const procesoReceta = escapeJSON(pm.variables.replaceIn('{{$randomLoremParagraphs}}'));\r",
+									"const videoReceta = escapeJSON(pm.variables.replaceIn('{{$randomUrl}}'));\r",
+									"\r",
+									"pm.environment.set('nombreReceta',nombreReceta);\r",
+									"pm.environment.set('descripcionReceta', descripcionReceta);\r",
+									"pm.environment.set('fotoReceta', fotoReceta);\r",
+									"pm.environment.set('procesoReceta', procesoReceta);\r",
+									"pm.environment.set('videoReceta', videoReceta)\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{nombreReceta}}\",\r\n    \"descripcion\":\"{{descripcionReceta}}\",\r\n    \"foto\": \"{{fotoReceta}}\",\r\n    \"proceso\":\"{{procesoReceta}}\",\r\n    \"video\": \"{{videoReceta}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas"
+							]
+						},
+						"description": "Crear una receta, dentro del cuerpo del request se incluyen los campos necesarios para crear una receta"
+					},
+					"response": [
+						{
+							"name": "Crear una receta",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\": \"Paella española\",\r\n    \"descripcion\":\"La paella es un tradicional plato español originario de Valencia, famoso por su combinación de sabores mediterráneos. Se elabora con arroz como ingrediente principal, al que se añade una variedad de mariscos como gambas, mejillones y calamares, junto con pollo o conejo, verduras frescas y azafrán, que le da su característico color dorado. Cocinada a fuego lento en una sartén ancha y poco profunda, la paella es un festín que celebra la riqueza culinaria de la región.\",\r\n    \"foto\":\"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\r\n    \"proceso\":\"Preparación de ingredientes: Limpia y corta los mariscos, el pollo (o conejo), y las verduras (pimiento, tomate,judías verdes). Ten listo el caldo de pescado o pollo, y disuelve el azafrán en un poco de caldo caliente.Cocción de carnes: En una paellera con aceite de oliva, dora el pollo o conejo, retíralo y resérvalo. Luego, sofríe los mariscos hasta que estén ligeramente cocidos y también resérvalos. Sofrito: En la misma paellera, añade más aceite si es necesario, sofríe el pimiento, tomate rallado y ajo hasta que estén tiernos. Añadir arroz: Incorpora el arroz al sofrito y mézclalo bien para que absorba los sabores. Añadir caldo y azafrán: Vierte el caldo caliente y el azafrán disuelto. Coloca las carnes y verduras reservadas, distribuyéndolas uniformemente. Cocina a fuego medio-alto hasta que el arroz esté tierno y el caldo se haya absorbido. Cocción final: Añade los mariscos en los últimos minutos de cocción, dejando que se terminen de cocinar sobre el arroz. Deja reposar unos minutos antes de servir.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "recetas",
+									"host": [
+										"recetas"
+									]
+								}
+							},
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"1\",\n    \"nombre\": \"Paella española\",\n    \"descripcion\": \"La paella es un tradicional plato español originario de Valencia, famoso por su combinación de sabores mediterráneos. Se elabora con arroz como ingrediente principal, al que se añade una variedad de mariscos como gambas, mejillones y calamares, junto con pollo o conejo, verduras frescas y azafrán, que le da su característico color dorado. Cocinada a fuego lento en una sartén ancha y poco profunda, la paella es un festín que celebra la riqueza culinaria de la región.\",\n    \"foto\": \"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\n    \"proceso\": \"Preparación de ingredientes: Limpia y corta los mariscos, el pollo (o conejo), y las verduras (pimiento, tomate,judías verdes). Ten listo el caldo de pescado o pollo, y disuelve el azafrán en un poco de caldo caliente.Cocción de carnes: En una paellera con aceite de oliva, dora el pollo o conejo, retíralo y resérvalo. Luego, sofríe los mariscos hasta que estén ligeramente cocidos y también resérvalos. Sofrito: En la misma paellera, añade más aceite si es necesario, sofríe el pimiento, tomate rallado y ajo hasta que estén tiernos. Añadir arroz: Incorpora el arroz al sofrito y mézclalo bien para que absorba los sabores. Añadir caldo y azafrán: Vierte el caldo caliente y el azafrán disuelto. Coloca las carnes y verduras reservadas, distribuyéndolas uniformemente. Cocina a fuego medio-alto hasta que el arroz esté tierno y el caldo se haya absorbido. Cocción final: Añade los mariscos en los últimos minutos de cocción, dejando que se terminen de cocinar sobre el arroz. Deja reposar unos minutos antes de servir.\"\n}"
+						},
+						{
+							"name": "Falla en la creación de una receta",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\": \"Paella española\",\r\n    \"descripcion\":\"La paella es un tradicional plato español originario de Valencia, famoso por su combinación de sabores mediterráneos. Se elabora con arroz como ingrediente principal, al que se añade una variedad de mariscos como gambas, mejillones y calamares, junto con pollo o conejo, verduras frescas y azafrán, que le da su característico color dorado. Cocinada a fuego lento en una sartén ancha y poco profunda, la paella es un festín que celebra la riqueza culinaria de la región.\",\r\n    \"foto\":\"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\r\n    \"proceso\":\"Preparación de ingredientes: Limpia y corta los mariscos, el pollo (o conejo), y las verduras (pimiento, tomate,judías verdes). Ten listo el caldo de pescado o pollo, y disuelve el azafrán en un poco de caldo caliente.Cocción de carnes: En una paellera con aceite de oliva, dora el pollo o conejo, retíralo y resérvalo. Luego, sofríe los mariscos hasta que estén ligeramente cocidos y también resérvalos. Sofrito: En la misma paellera, añade más aceite si es necesario, sofríe el pimiento, tomate rallado y ajo hasta que estén tiernos. Añadir arroz: Incorpora el arroz al sofrito y mézclalo bien para que absorba los sabores. Añadir caldo y azafrán: Vierte el caldo caliente y el azafrán disuelto. Coloca las carnes y verduras reservadas, distribuyéndolas uniformemente. Cocina a fuego medio-alto hasta que el arroz esté tierno y el caldo se haya absorbido. Cocción final: Añade los mariscos en los últimos minutos de cocción, dejando que se terminen de cocinar sobre el arroz. Deja reposar unos minutos antes de servir.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas"
+									]
+								}
+							},
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\":\"Internal Server Error\",\n    \"message\":\"Failed to create resource due to a server error.\"\n}"
+						},
+						{
+							"name": "Crear una receta",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\": \"Paella española\",\r\n    \"descripcion\":\"La paella es un tradicional plato español originario de Valencia, famoso por su combinación de sabores mediterráneos. Se elabora con arroz como ingrediente principal, al que se añade una variedad de mariscos como gambas, mejillones y calamares, junto con pollo o conejo, verduras frescas y azafrán, que le da su característico color dorado. Cocinada a fuego lento en una sartén ancha y poco profunda, la paella es un festín que celebra la riqueza culinaria de la región.\",\r\n    \"foto\":\"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\r\n    \"proceso\":\"Preparación de ingredientes: Limpia y corta los mariscos, el pollo (o conejo), y las verduras (pimiento, tomate,judías verdes). Ten listo el caldo de pescado o pollo, y disuelve el azafrán en un poco de caldo caliente.Cocción de carnes: En una paellera con aceite de oliva, dora el pollo o conejo, retíralo y resérvalo. Luego, sofríe los mariscos hasta que estén ligeramente cocidos y también resérvalos. Sofrito: En la misma paellera, añade más aceite si es necesario, sofríe el pimiento, tomate rallado y ajo hasta que estén tiernos. Añadir arroz: Incorpora el arroz al sofrito y mézclalo bien para que absorba los sabores. Añadir caldo y azafrán: Vierte el caldo caliente y el azafrán disuelto. Coloca las carnes y verduras reservadas, distribuyéndolas uniformemente. Cocina a fuego medio-alto hasta que el arroz esté tierno y el caldo se haya absorbido. Cocción final: Añade los mariscos en los últimos minutos de cocción, dejando que se terminen de cocinar sobre el arroz. Deja reposar unos minutos antes de servir.\",\r\n    \"video\": \"https://www.youtube.com/watch?v=CrMAy18VRg4\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1856"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"740-S0lcgWB8w6URUK6Ou0bDUSZvZXQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 00:44:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"nombre\": \"Paella española\",\n    \"descripcion\": \"La paella es un tradicional plato español originario de Valencia, famoso por su combinación de sabores mediterráneos. Se elabora con arroz como ingrediente principal, al que se añade una variedad de mariscos como gambas, mejillones y calamares, junto con pollo o conejo, verduras frescas y azafrán, que le da su característico color dorado. Cocinada a fuego lento en una sartén ancha y poco profunda, la paella es un festín que celebra la riqueza culinaria de la región.\",\n    \"foto\": \"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\n    \"proceso\": \"Preparación de ingredientes: Limpia y corta los mariscos, el pollo (o conejo), y las verduras (pimiento, tomate,judías verdes). Ten listo el caldo de pescado o pollo, y disuelve el azafrán en un poco de caldo caliente.Cocción de carnes: En una paellera con aceite de oliva, dora el pollo o conejo, retíralo y resérvalo. Luego, sofríe los mariscos hasta que estén ligeramente cocidos y también resérvalos. Sofrito: En la misma paellera, añade más aceite si es necesario, sofríe el pimiento, tomate rallado y ajo hasta que estén tiernos. Añadir arroz: Incorpora el arroz al sofrito y mézclalo bien para que absorba los sabores. Añadir caldo y azafrán: Vierte el caldo caliente y el azafrán disuelto. Coloca las carnes y verduras reservadas, distribuyéndolas uniformemente. Cocina a fuego medio-alto hasta que el arroz esté tierno y el caldo se haya absorbido. Cocción final: Añade los mariscos en los últimos minutos de cocción, dejando que se terminen de cocinar sobre el arroz. Deja reposar unos minutos antes de servir.\",\n    \"video\": \"https://www.youtube.com/watch?v=CrMAy18VRg4\",\n    \"id\": \"3dd22af0-5390-4964-acda-82daa7a38a00\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener todas las recetas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Number of recipes > ' + 0, function () {\r",
+									"   var data = pm.response.json()\r",
+									"   pm.expect(data.length).to.greaterThan(0)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recetas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas"
+							]
+						},
+						"description": "Obtener el listado de todas las recetas"
+					},
+					"response": [
+						{
+							"name": "Obtener todas las recetas",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/api/v1/recetas",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"recetas"
+									]
+								}
+							},
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "[\r\n    {\r\n        \"id\": 1,\r\n        \"nombre\": \"Paella española\",\r\n        \"descripcion\":\"La paella es un tradicional plato español originario de Valencia, famoso por su combinación de sabores mediterráneos. Se elabora con arroz como ingrediente principal, al que se añade una variedad de mariscos como gambas, mejillones y calamares, junto con pollo o conejo, verduras frescas y azafrán, que le da su característico color dorado. Cocinada a fuego lento en una sartén ancha y poco profunda, la paella es un festín que celebra la riqueza culinaria de la región.\",\r\n        \"foto\":\"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\r\n        \"proceso\":\"Preparación de ingredientes: Limpia y corta los mariscos, el pollo (o conejo), y las verduras (pimiento, tomate,judías verdes). Ten listo el caldo de pescado o pollo, y disuelve el azafrán en un poco de caldo caliente.Cocción de carnes: En una paellera con aceite de oliva, dora el pollo o conejo, retíralo y resérvalo. Luego, sofríe los mariscos hasta que estén ligeramente cocidos y también resérvalos. Sofrito: En la misma paellera, añade más aceite si es necesario, sofríe el pimiento, tomate rallado y ajo hasta que estén tiernos. Añadir arroz: Incorpora el arroz al sofrito y mézclalo bien para que absorba los sabores. Añadir caldo y azafrán: Vierte el caldo caliente y el azafrán disuelto. Coloca las carnes y verduras reservadas, distribuyéndolas uniformemente. Cocina a fuego medio-alto hasta que el arroz esté tierno y el caldo se haya absorbido. Cocción final: Añade los mariscos en los últimos minutos de cocción, dejando que se terminen de cocinar sobre el arroz. Deja reposar unos minutos antes de servir.\", \r\n        \"cultura\": \"Española\",\r\n        \"productos\":[\r\n            {\r\n            \"id\":\"819e7da4-96f4-4c45-81fc-1e5416544598\",\r\n            \"nombre\":\"Mariscos\", \r\n            \"descripcion\":\"Producto usado en platos de alta cocina\"\r\n            }, \r\n            {\r\n            \"id\":\"a4178cd4-dc0e-4f99-8b9d-617e8a3d257f\",\r\n            \"nombre\":\"Pimiento\",\r\n            \"descripcion\":\"Producto usado en platos de alta cocina\"\r\n            }\r\n        ]\r\n    }\r\n]"
+						},
+						{
+							"name": "Falla en obtener todas las recetas",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas"
+									]
+								}
+							},
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"error\":\"Internal Server Error\",\r\n    \"message\":\"Failed to get recipes due to a server error.\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener una receta por id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recetas/{{receta_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{receta_id}}"
+							]
+						},
+						"description": "Endpoint para obtener una receta enviando el id desde la URI"
+					},
+					"response": [
+						{
+							"name": "Obtener una receta",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta}}"
+									]
+								}
+							},
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"nombre\": \"Paella española\",\n    \"descripcion\": \"La paella es un tradicional plato español originario de Valencia, famoso por su combinación de sabores mediterráneos. Se elabora con arroz como ingrediente principal, al que se añade una variedad de mariscos como gambas, mejillones y calamares, junto con pollo o conejo, verduras frescas y azafrán, que le da su característico color dorado. Cocinada a fuego lento en una sartén ancha y poco profunda, la paella es un festín que celebra la riqueza culinaria de la región.\",\n    \"foto\": \"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\n    \"proceso\": \"Preparación de ingredientes: Limpia y corta los mariscos, el pollo (o conejo), y las verduras (pimiento, tomate,judías verdes). Ten listo el caldo de pescado o pollo, y disuelve el azafrán en un poco de caldo caliente.Cocción de carnes: En una paellera con aceite de oliva, dora el pollo o conejo, retíralo y resérvalo. Luego, sofríe los mariscos hasta que estén ligeramente cocidos y también resérvalos. Sofrito: En la misma paellera, añade más aceite si es necesario, sofríe el pimiento, tomate rallado y ajo hasta que estén tiernos. Añadir arroz: Incorpora el arroz al sofrito y mézclalo bien para que absorba los sabores. Añadir caldo y azafrán: Vierte el caldo caliente y el azafrán disuelto. Coloca las carnes y verduras reservadas, distribuyéndolas uniformemente. Cocina a fuego medio-alto hasta que el arroz esté tierno y el caldo se haya absorbido. Cocción final: Añade los mariscos en los últimos minutos de cocción, dejando que se terminen de cocinar sobre el arroz. Deja reposar unos minutos antes de servir.\",\n    \"cultura\": \"Española\",\n    \"productos\": [\n        {\n            \"id\": \"819e7da4-96f4-4c45-81fc-1e5416544598\",\n            \"nombre\": \"Mariscos\",\n            \"descripcion\": \"Producto usado en platos de alta cocina\"\n        },\n        {\n            \"id\": \"a4178cd4-dc0e-4f99-8b9d-617e8a3d257f\",\n            \"nombre\": \"Pimiento\",\n            \"descripcion\": \"Producto usado en platos de alta cocina\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "Falla en obtener una receta",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta}}"
+									]
+								}
+							},
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"error\":\"Internal Server Error\",\r\n    \"message\":\"Failed to get resource due to a server error.\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener una receta que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"The recipe with the given id was not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recetas/{{id_receta_fail}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{id_receta_fail}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener una receta que no existe",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta_fail}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta_fail}}"
+									]
+								}
+							},
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"The recipe with the given id was not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar receta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Escapar caracteres especiales\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"const nombreReceta = escapeJSON(pm.variables.replaceIn('{{$randomWords}}'));\r",
+									"const descripcionReceta =  escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}'));\r",
+									"const fotoReceta = escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}'));\r",
+									"const procesoReceta = escapeJSON(pm.variables.replaceIn('{{$randomLoremParagraphs}}'));\r",
+									"const videoReceta = escapeJSON(pm.variables.replaceIn('{{$randomUrl}}'));\r",
+									"\r",
+									"pm.environment.set('nombreRecetaUpd',nombreReceta);\r",
+									"pm.environment.set('descripcionRecetaUpd', descripcionReceta);\r",
+									"pm.environment.set('fotoRecetaUpd', fotoReceta);\r",
+									"pm.environment.set('procesoRecetaUpd', procesoReceta);\r",
+									"pm.environment.set('videoRecetaUpd', videoReceta)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{nombreRecetaUpd}}\",\r\n    \"descripcion\":\"{{descripcionRecetaUpd}}\",\r\n    \"foto\": \"{{fotoRecetaUpd}}\",\r\n    \"proceso\":\"{{procesoRecetaUpd}}\",\r\n    \"video\": \"{{videoRecetaUpd}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas/{{receta_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{receta_id}}"
+							]
+						},
+						"description": "Actualizar una receta usando el id de la receta"
+					},
+					"response": [
+						{
+							"name": "Actualizar receta",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\": \"Paella española version latina\",\r\n    \"descripcion\":\"La paella es un plato español de arroz, cocinado con mariscos, carnes y verduras, sazonado con azafrán. Originaria de Valencia, es famosa por su sabor y color distintivo\",\r\n    \"foto\":\"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\r\n    \"proceso\":\"Preparación: Marina pollo, camarones, y chorizo en ajo, comino, y jugo de limón. Corta pimientos, cebolla, y tomate. Cocción de carnes: Dora el pollo y chorizo en aceite, luego agrega los camarones brevemente. Sofrito: Sofríe cebolla, pimientos y tomate. Añade achiote para color. Añadir arroz: Mezcla arroz con el sofrito, agrega caldo con azafrán y cocina a fuego medio.Finalización: Agrega los mariscos y verduras, cocinando hasta que el arroz esté tierno. Deja reposar antes de servir.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta}}"
+									]
+								}
+							},
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"nombre\": \"Paella española version latina\",\n    \"descripcion\": \"La paella es un plato español de arroz, cocinado con mariscos, carnes y verduras, sazonado con azafrán. Originaria de Valencia, es famosa por su sabor y color distintivo\",\n    \"foto\": \"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\n    \"proceso\": \"Preparación: Marina pollo, camarones, y chorizo en ajo, comino, y jugo de limón. Corta pimientos, cebolla, y tomate. Cocción de carnes: Dora el pollo y chorizo en aceite, luego agrega los camarones brevemente. Sofrito: Sofríe cebolla, pimientos y tomate. Añade achiote para color. Añadir arroz: Mezcla arroz con el sofrito, agrega caldo con azafrán y cocina a fuego medio.Finalización: Agrega los mariscos y verduras, cocinando hasta que el arroz esté tierno. Deja reposar antes de servir.\"\n}"
+						},
+						{
+							"name": "Falla al actualizar una receta",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\": \"Paella española version latina\",\r\n    \"descripcion\":\"La paella es un plato español de arroz, cocinado con mariscos, carnes y verduras, sazonado con azafrán. Originaria de Valencia, es famosa por su sabor y color distintivo\",\r\n    \"foto\":\"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\r\n    \"proceso\":\"Preparación: Marina pollo, camarones, y chorizo en ajo, comino, y jugo de limón. Corta pimientos, cebolla, y tomate. Cocción de carnes: Dora el pollo y chorizo en aceite, luego agrega los camarones brevemente. Sofrito: Sofríe cebolla, pimientos y tomate. Añade achiote para color. Añadir arroz: Mezcla arroz con el sofrito, agrega caldo con azafrán y cocina a fuego medio.Finalización: Agrega los mariscos y verduras, cocinando hasta que el arroz esté tierno. Deja reposar antes de servir.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta}}"
+									]
+								}
+							},
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\":\"Internal Server Error\",\n    \"message\":\"Failed to update resource due to a server error.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar una receta que no existe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Escapar caracteres especiales\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"const nombreReceta = escapeJSON(pm.variables.replaceIn('{{$randomWords}}'));\r",
+									"const descripcionReceta =  escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}'));\r",
+									"const fotoReceta = escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}'));\r",
+									"const procesoReceta = escapeJSON(pm.variables.replaceIn('{{$randomLoremParagraphs}}'));\r",
+									"const videoReceta = escapeJSON(pm.variables.replaceIn('{{$randomUrl}}'));\r",
+									"\r",
+									"pm.environment.set('nombreRecetaUpd',nombreReceta);\r",
+									"pm.environment.set('descripcionRecetaUpd', descripcionReceta);\r",
+									"pm.environment.set('fotoRecetaUpd', fotoReceta);\r",
+									"pm.environment.set('procesoRecetaUpd', procesoReceta);\r",
+									"pm.environment.set('videoRecetaUpd', videoReceta)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(`The recipe with the given id 41939fca-7796-46b1-9721-4f6b20aea21b was not found`);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Paella española version latina\",\r\n    \"descripcion\":\"La paella es un plato español de arroz, cocinado con mariscos, carnes y verduras, sazonado con azafrán. Originaria de Valencia, es famosa por su sabor y color distintivo\",\r\n    \"foto\":\"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\r\n    \"proceso\":\"Preparación: Marina pollo, camarones, y chorizo en ajo, comino, y jugo de limón. Corta pimientos, cebolla, y tomate. Cocción de carnes: Dora el pollo y chorizo en aceite, luego agrega los camarones brevemente. Sofrito: Sofríe cebolla, pimientos y tomate. Añade achiote para color. Añadir arroz: Mezcla arroz con el sofrito, agrega caldo con azafrán y cocina a fuego medio.Finalización: Agrega los mariscos y verduras, cocinando hasta que el arroz esté tierno. Deja reposar antes de servir.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas/{{id_receta_fail}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{id_receta_fail}}"
+							]
+						},
+						"description": "Intento de actualizar una receta que no existe"
+					},
+					"response": [
+						{
+							"name": "Actualizar receta",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\": \"Paella española version latina\",\r\n    \"descripcion\":\"La paella es un plato español de arroz, cocinado con mariscos, carnes y verduras, sazonado con azafrán. Originaria de Valencia, es famosa por su sabor y color distintivo\",\r\n    \"foto\":\"https://images.pexels.com/photos/16743486/pexels-photo-16743486/free-photo-of-comida-restaurante-langosta-cocinando.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\r\n    \"proceso\":\"Preparación: Marina pollo, camarones, y chorizo en ajo, comino, y jugo de limón. Corta pimientos, cebolla, y tomate. Cocción de carnes: Dora el pollo y chorizo en aceite, luego agrega los camarones brevemente. Sofrito: Sofríe cebolla, pimientos y tomate. Añade achiote para color. Añadir arroz: Mezcla arroz con el sofrito, agrega caldo con azafrán y cocina a fuego medio.Finalización: Agrega los mariscos y verduras, cocinando hasta que el arroz esté tierno. Deja reposar antes de servir.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta_fail}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta_fail}}"
+									]
+								}
+							},
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"The resource with the given id was not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Borrar receta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recetas/{{receta_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{receta_id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Borrar receta",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta}}"
+									]
+								}
+							},
+							"code": 204,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Borrar receta que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"The recipe with the given id was not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recetas/{{id_receta_fail}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{id_receta_fail}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Borrar receta",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta_fail}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta_fail}}"
+									]
+								}
+							},
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"The resource with the given id was not found\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Operaciones recetas / productos",
+			"item": [
+				{
+					"name": "Agregar un producto a una receta",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createRecetaUrl = 'localhost:3000/api/v1/recetas'; \r",
+									"const createProductoUrl = 'localhost:3000/api/v1/productos'; \r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"const nombreReceta = escapeJSON(pm.variables.replaceIn('{{$randomWords}}'));\r",
+									"const descripcionReceta =  escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}'));\r",
+									"const fotoReceta = escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}'));\r",
+									"const procesoReceta = escapeJSON(pm.variables.replaceIn('{{$randomLoremParagraphs}}'));\r",
+									"const videoReceta = escapeJSON(pm.variables.replaceIn('{{$randomUrl}}'));\r",
+									"\r",
+									"\r",
+									"const recetaPayload = {\r",
+									"    nombre: nombreReceta,\r",
+									"    descripcion: descripcionReceta,\r",
+									"    foto: fotoReceta,\r",
+									"    proceso: procesoReceta,\r",
+									"    video: videoReceta\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: createRecetaUrl,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Authorization': 'Bearer ' + token,\r",
+									"        'Content-Type': 'application/json',\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(recetaPayload)\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    if (err) {\r",
+									"        console.error('Error al crear la receta:', err);\r",
+									"    } else {\r",
+									"        const recetaId = response.json().id; \r",
+									"        console.log('Receta creada con ID:', recetaId);\r",
+									"        pm.globals.set('recetaId', recetaId);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"\r",
+									"for (let i = 0; i < 2; i++) {\r",
+									"    const productoPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        historia: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"    }\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: createProductoUrl,\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Authorization': 'Bearer ' + token,\r",
+									"            'Content-Type': 'application/json',\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(productoPayload)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error('Error al crear el producto:', err);\r",
+									"        } else {\r",
+									"            const productoId = response.json().id; \r",
+									"            console.log('Producto creado con ID:', productoId);\r",
+									"            pm.globals.set(`productoId${i}`, productoId);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"   pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productoIds\": [\"{{productoId0}}\",\"{{productoId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas/{{recetaId}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{recetaId}}",
+								"productos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar un producto a una receta",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productoIds\": [\"2f542657-8b65-406c-9928-9a47b997b3ec\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta}}",
+										"productos"
+									]
+								}
+							},
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\":1,\n    \"nombre\":\"Arroz premium\",\n    \"descripción\": \"Arroz de alta calidad para preparaciones refinadas\",\n    \"historia\": \"El arroz, uno de los cultivos más antiguos del mundo, se originó en Asia hace más de 9,000 años, en la región que hoy es China. Desde allí, se extendió a la India y otras partes del sudeste asiático, y eventualmente llegó al Medio Oriente y Europa a través de rutas comerciales. En el siglo XV, los exploradores europeos llevaron el arroz al continente americano. Hoy en día, es un alimento básico para más de la mitad de la población mundial, adaptándose a diversas culturas y cocinas.\",\n    \"categoria\": {\n        \"id\":\"ccbdba33-7586-445d-8400-aa886c5b8bba\",\n        \"nombre\":\"Cereal\",\n        \"descripcion\":\"Los cereales son una categoría de alimentos que incluye granos como el trigo, arroz, maíz, avena y cebada. Son ricos en carbohidratos y fibra, y forman la base de la alimentación en muchas culturas. Estos granos se cultivan en todo el mundo y se utilizan en una variedad de productos alimenticios, desde panes y pastas hasta cereales para el desayuno.\"\n    }\n}"
+						},
+						{
+							"name": "Falla agregar un producto a una receta",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productoIds\": [\"2f542657-8b65-406c-9928-9a47b997b3ec\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta}}",
+										"productos"
+									]
+								}
+							},
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\":\"Internal Server Error\",\n    \"message\":\"Failed to create resource due to a server error.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Agregar un producto que no existe a una receta",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"Alguno de los productos no existe\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productoIds\": [\"edba0abd-b7b5-4317-b428-944777344b21\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas/{{recetaId}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{recetaId}}",
+								"productos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar un producto que no existe a una receta",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productoIds\": [\"2f542657-8b65-406c-9928-9a47b997b3eg\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta}}",
+										"productos"
+									]
+								}
+							},
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": [\n        \"each value in productoIds must be a UUID\"\n    ],\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "Agregar un producto  a una receta que no existe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createProductoUrl = 'localhost:3000/api/v1/productos'; \r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"for (let i = 0; i < 2; i++) {\r",
+									"    const productoPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        historia: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"    }\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: createProductoUrl,\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Authorization': 'Bearer ' + token,\r",
+									"            'Content-Type': 'application/json',\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(productoPayload)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error('Error al crear el producto:', err);\r",
+									"        } else {\r",
+									"            const productoId = response.json().id; \r",
+									"            console.log('Producto creado con ID:', productoId);\r",
+									"            pm.environment.set(`productoId${i}`, productoId);\r",
+									"        }\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"The recipe with the given id was not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productoIds\": [\"{{productoId0}}\",\"{{productoId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas/{{id_receta_fail}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{id_receta_fail}}",
+								"productos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar un producto a una receta que no existe",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productoIds\": [\"2f542657-8b65-406c-9928-9a47b997b3ec\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta_fail}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta_fail}}",
+										"productos"
+									]
+								}
+							},
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"The recipe with the given id 41939fca-7796-46b1-9721-4f6b20aea21b was not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener productos de una receta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recetas/{{recetaId}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{recetaId}}",
+								"productos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener productos de una receta",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta}}",
+										"productos"
+									]
+								}
+							},
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"nombre\": \"Arroz premium\",\n        \"descripción\": \"Arroz de alta calidad para preparaciones refinadas\",\n        \"historia\": \"El arroz, uno de los cultivos más antiguos del mundo, se originó en Asia hace más de 9,000 años, en la región que hoy es China. Desde allí, se extendió a la India y otras partes del sudeste asiático, y eventualmente llegó al Medio Oriente y Europa a través de rutas comerciales. En el siglo XV, los exploradores europeos llevaron el arroz al continente americano. Hoy en día, es un alimento básico para más de la mitad de la población mundial, adaptándose a diversas culturas y cocinas.\",\n        \"categoria\": {\n            \"id\": \"ccbdba33-7586-445d-8400-aa886c5b8bba\",\n            \"nombre\": \"Cereal\",\n            \"descripcion\": \"Los cereales son una categoría de alimentos que incluye granos como el trigo, arroz, maíz, avena y cebada. Son ricos en carbohidratos y fibra, y forman la base de la alimentación en muchas culturas. Estos granos se cultivan en todo el mundo y se utilizan en una variedad de productos alimenticios, desde panes y pastas hasta cereales para el desayuno.\"\n        }\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Actualizar los productos de una receta",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createProductoUrl = 'localhost:3000/api/v1/productos'; \r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"for (let i = 0; i < 2; i++) {\r",
+									"    const productoPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        historia: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"    }\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: createProductoUrl,\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            \r",
+									"            'Authorization': 'Bearer ' + token,\r",
+									"            'Content-Type': 'application/json',\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(productoPayload)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error('Error al crear el producto:', err);\r",
+									"        } else {\r",
+									"            const productoId = response.json().id; \r",
+									"            console.log('Producto creado con ID:', productoId);\r",
+									"            pm.globals.set(`productoId${i}`, productoId);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productoIds\": [\"{{productoId0}}\",\"{{productoId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas/{{recetaId}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{recetaId}}",
+								"productos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Actualizar los productos de una receta",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productoIds\": [\"{{productoId0}}\",\"{{productoId1}}\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{recetaId}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{recetaId}}",
+										"productos"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1286"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"506-+SndOuTc3Z2b/f9RjdG9HE96I/8\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 03:02:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"0c9d10a5-8d07-4fea-9031-6213a517be4b\",\n    \"nombre\": \"synthesize synthesizing JSON deploy Avon\",\n    \"descripcion\": \"http://placeimg.com/640/480\",\n    \"foto\": \"http://placeimg.com/640/480\",\n    \"proceso\": \"Dolores eos quaerat vel culpa dolore perferendis. Eaque voluptatem mollitia delectus officia. Veniam ipsum eveniet esse tempore eveniet aperiam. Laborum aperiam quo unde rem animi iusto corporis autem officiis. Aliquam nihil doloribus aut sunt totam. Nemo reiciendis et eos accusantium qui aspernatur vel ab voluptates.\\\\n \\\\rEa sint sed atque. Molestias sunt placeat rerum fuga. Porro omnis aut qui nemo veritatis error adipisci dicta ratione.\\\\n \\\\rIusto atque fuga. Consequatur molestias voluptatem repellendus doloribus dolor suscipit optio dolorem. Et omnis sit facilis optio quis officiis. Voluptate omnis sed sit et laboriosam praesentium ipsam. Accusamus doloribus fuga. Et odio provident dolor.\",\n    \"video\": \"http://shania.org\",\n    \"productos\": [\n        {\n            \"id\": \"53d6004a-c37e-4b19-a38f-f2712f45e79e\",\n            \"nombre\": \"hack Cambridgeshire\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"historia\": \"http://placeimg.com/640/480\"\n        },\n        {\n            \"id\": \"0a3f0f27-e6b6-4b88-bcc6-c290a70ee55a\",\n            \"nombre\": \"demand-driven Supervisor navigate Metal Steel\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"historia\": \"http://placeimg.com/640/480\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar los productos de una receta que no existe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createProductoUrl = 'localhost:3000/api/v1/productos'; \r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"for (let i = 0; i < 2; i++) {\r",
+									"    const productoPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        historia: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"    }\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: createProductoUrl,\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            \r",
+									"            'Authorization': 'Bearer ' + token,\r",
+									"            'Content-Type': 'application/json',\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(productoPayload)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error('Error al crear el producto:', err);\r",
+									"        } else {\r",
+									"            const productoId = response.json().id; \r",
+									"            console.log('Producto creado con ID:', productoId);\r",
+									"            pm.environment.set(`productoId${i}`, productoId);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"The recipe with the given id was not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productoIds\": [\"{{productoId0}}\",\"{{productoId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas/{{id_receta_fail}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{id_receta_fail}}",
+								"productos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Actualizar los productos de una receta Copy",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productoIds\": [\"{{productoId0}}\",\"{{productoId1}}\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta_fail}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta_fail}}",
+										"productos"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "73"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"49-c3CrPze6Ck+KRy7oRDIsmE43A0o\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 03:09:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"The recipe with the given id was not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar los productos que no existen de una receta",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createProductoUrl = 'localhost:3000/api/v1/productos'; \r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"\r",
+									"\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"for (let i = 0; i < 2; i++) {\r",
+									"    const productoPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        historia: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"    }\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: createProductoUrl,\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Authorization': 'Bearer ' + token,\r",
+									"            'Content-Type': 'application/json',\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(productoPayload)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error('Error al crear el producto:', err);\r",
+									"        } else {\r",
+									"            const productoId = response.json().id; \r",
+									"            console.log('Producto creado con ID:', productoId);\r",
+									"            pm.environment.set(`productoId${i}`, productoId);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"Alguno de los productos no existe\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productoIds\": [\"edba0abd-b7b5-4317-b428-944777344b21\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas/{{recetaId}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{recetaId}}",
+								"productos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Actualizar los productos de una receta Copy",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productoIds\": [\"edba0abd-b7b5-4317-b428-944777344b21\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/recetas/{{recetaId}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{recetaId}}",
+										"productos"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "64"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"40-2vsP5N1RHKHxM5q9e6wtwP2p8YM\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 03:06:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"Alguno de los productos no existe\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar un producto de una receta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recetas/{{recetaId}}/productos/{{productoId0}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{recetaId}}",
+								"productos",
+								"{{productoId0}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Eliminar un producto de una receta",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/recetas/{{recetaId}}/productos/{{productoId0}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{recetaId}}",
+										"productos",
+										"{{productoId0}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 03:18:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Eliminar un producto de una receta que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"The recipe with the given id was not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recetas/{{id_receta_fail}}/productos/{{productoId0}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{id_receta_fail}}",
+								"productos",
+								"{{productoId0}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener un producto de una receta que no existe",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/recetas/{{id_receta_fail}}/productos/{{id_producto}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"recetas",
+										"{{id_receta_fail}}",
+										"productos",
+										"{{id_producto}}"
+									]
+								}
+							},
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"The recipe with the given id 41939fca-7796-46b1-9721-4f6b20aea21b was not found\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()\r",
+							"pm.globals.set(\"token\", data.token);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/usuarios/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"usuarios",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "200"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"c8-cm1ho4H7tPdrPkWRdy+lWteZErU\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 14 Sep 2024 22:07:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJyb2xlcyI6WyJhZG1pbiJdLCJpYXQiOjE3MjYzNTE2NTYsImV4cCI6MTcyNjM1ODg1Nn0.PKeLsf6GLq-H8HBdXxmxeBtjtVkM44Z5CBbXBXAdQ9g\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "id_receta",
+			"value": "41939fca-7796-46b1-9721-4f6b20aea211",
+			"type": "string"
+		},
+		{
+			"key": "nombre_receta",
+			"value": "Paella",
+			"type": "string"
+		},
+		{
+			"key": "id_receta_fail",
+			"value": "41939fca-7796-46b1-9721-4f6b20aea21b",
+			"type": "string"
+		},
+		{
+			"key": "id_producto",
+			"value": "2f542657-8b65-406c-9928-9a47b997b3ec",
+			"type": "string"
+		},
+		{
+			"key": "id_producto_fail",
+			"value": "2f542657-8b65-406c-9928-9a47b997b3ef",
+			"type": "string"
+		}
+	]
+}

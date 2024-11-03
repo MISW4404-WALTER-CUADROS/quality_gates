@@ -1,0 +1,1610 @@
+{
+	"info": {
+		"_postman_id": "fdc79827-9c16-459b-90fd-6917f9f9cc7a",
+		"name": "PRODUCTOS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29550126"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()\r",
+							"pm.globals.set(\"token\", data.token);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/usuarios/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"usuarios",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "200"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"c8-cm1ho4H7tPdrPkWRdy+lWteZErU\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 14 Sep 2024 22:07:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJyb2xlcyI6WyJhZG1pbiJdLCJpYXQiOjE3MjYzNTE2NTYsImV4cCI6MTcyNjM1ODg1Nn0.PKeLsf6GLq-H8HBdXxmxeBtjtVkM44Z5CBbXBXAdQ9g\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear un producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()\r",
+							"pm.globals.set(\"id_producto\", data.id);\r",
+							"\r",
+							"pm.test(\"201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El producto tiene 'id'\", function () {\r",
+							"    pm.response.to.have.property('id');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/productos",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos"
+					]
+				},
+				"description": "Crear una receta, dentro del cuerpo del request se incluyen los campos necesarios para crear una receta"
+			},
+			"response": [
+				{
+					"name": "Crear un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"819e7da4-96f4-4c45-81fc-1e5416544598\",\n    \"nombre\": \"Arroz\",\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\n}"
+				},
+				{
+					"name": "Error al crear un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120005\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Recurso no encontrado\",\n    \"message\": \"No existe un producto con ese id\"\n}"
+				},
+				{
+					"name": "Error al crear un producto con categoria que no existe",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120005\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Recurso no encontrado\",\n    \"message\": \"No existe una categoria con ese id\"\n}"
+				},
+				{
+					"name": "Error interno en la creación de un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear un producto con una categoria que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 400\", function () {\r",
+							"   pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"No existe una categoria con ese id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"categoria\":\"00000000-0000-0000-0000-000000000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/productos",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos"
+					]
+				},
+				"description": "Crear una receta, dentro del cuerpo del request se incluyen los campos necesarios para crear una receta"
+			},
+			"response": [
+				{
+					"name": "Error al crear un producto con categoria que no existe",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120005\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Recurso no encontrado\",\n    \"message\": \"No existe una categoria con ese id\"\n}"
+				},
+				{
+					"name": "Error interno en la creación de un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener todos los productos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Numero total de productos > 0', function () {\r",
+							"   var data = pm.response.json()\r",
+							"   pm.expect(data.length).to.greaterThan(0)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta es un array\", function () {\r",
+							"   pm.expect(pm.response.json()).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Cada producto tiene 'id' y 'nombre' e historia\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   data.forEach(function (category) {\r",
+							"       pm.expect(category).to.have.property('id');\r",
+							"       pm.expect(category).to.have.property('nombre');\r",
+							"       pm.expect(category).to.have.property('historia');\r",
+							"   });\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/productos",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener todos los productos",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "[\r\n   {\r\n       \"id\": \"819e7da4-96f4-4c45-81fc-1e5416544598\",\r\n       \"nombre\": \"Arroz\",\r\n       \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n       \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n       \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\",\r\n       \"receta\":[]\r\n   },\r\n   {\r\n       \"id\": \"14f05d0e-1275-11ed-861d-0242ac120002\",\r\n       \"nombre\": \"Mariscos\",\r\n       \"descripcion\": \"Los mariscos incluyen una amplia variedad de organismos marinos como camarones, mejillones, y cangrejos. Son una fuente importante de proteínas y nutrientes, y son altamente apreciados en la gastronomía por su sabor único y su capacidad de adaptarse a diversas preparaciones culinarias.\",\r\n       \"historia\": \"El consumo de mariscos se remonta a tiempos prehistóricos, cuando las comunidades costeras los recolectaban para su alimentación. Hoy en día, los mariscos son una delicadeza global, presente en las cocinas de todo el mundo, con una fuerte tradición en países con acceso a costas ricas en biodiversidad marina.\",\r\n       \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120004\",\r\n       \"receta\":[]\r\n   }\r\n]\r\n"
+				},
+				{
+					"name": "Error en obtener todos los productos",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\r\n}"
+				},
+				{
+					"name": "Error en obtener todos los productos Copy",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener producto por id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene 'id', 'nombre' e 'historia'\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData).to.have.property('nombre');\r",
+							"    pm.expect(jsonData).to.have.property('historia');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El 'id' del producto es correcto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"id_producto\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El campo 'nombre' no está vacío\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.nombre).to.not.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"nombre\": \"Arroz\",\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\",\n    \"recetas\":[]\n}"
+				},
+				{
+					"name": "Error en obtener un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe un producto con ese id\"\r\n}"
+				},
+				{
+					"name": "Error Interno al obtener un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener producto que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"No existe un producto con ese id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/productos/{{id_producto_que_no_existe}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto_que_no_existe}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Error en obtener categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/categorias/14f05d0e-1275-11ed-861d-0242ac120003",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"categorias",
+								"14f05d0e-1275-11ed-861d-0242ac120003"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\r\n}"
+				},
+				{
+					"name": "Error en obtener una categoria que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/categorias/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categorias",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe un producto con ese id\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene 'id', 'nombre' e 'historia'\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData).to.have.property('nombre');\r",
+							"    pm.expect(jsonData).to.have.property('historia');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El 'id' del producto es correcto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"id_producto\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El campo 'nombre' no está vacío\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.nombre).to.not.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Arroz3\",\r\n    \"descripcion\": \"3El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"3El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"categoria\": \"fc8ab720-2928-4cc5-8017-84548c1cd0f3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto}}"
+					]
+				},
+				"description": "Actualizar una receta usando el id de la receta"
+			},
+			"response": [
+				{
+					"name": "Actualizar producto",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Arroz\",\r\n    \"description\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"history\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategorie\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"819e7da4-96f4-4c45-81fc-1e5416544598\",\n    \"nombre\": \"Arroz\",\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\n}"
+				},
+				{
+					"name": "Error en actualizar un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe un producto con ese id\"\r\n}"
+				},
+				{
+					"name": "Error Interno al actualizar un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo actualizar el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar producto que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"No existe un producto con ese id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Arroz Actualizado\",\r\n    \"descripcion\": \"Actualizado-El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"categoria\": \"fc8ab720-2928-4cc5-8017-84548c1cd0f3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/productos/{{id_producto_que_no_existe}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto_que_no_existe}}"
+					]
+				},
+				"description": "Actualizar una receta usando el id de la receta"
+			},
+			"response": [
+				{
+					"name": "Error en actualizar un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe un producto con ese id\"\r\n}"
+				},
+				{
+					"name": "Error Interno al actualizar un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo actualizar el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar producto con categoria que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 400\", function () {\r",
+							"   pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"La categoría no existe\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Arroz3\",\r\n    \"descripcion\": \"3El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"3El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"categoria\": \"00000000-0000-0000-0000-000000000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto}}"
+					]
+				},
+				"description": "Actualizar una receta usando el id de la receta"
+			},
+			"response": [
+				{
+					"name": "Error en actualizar un producto con categiria que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"La categoría no existe\"\r\n}"
+				},
+				{
+					"name": "Error Interno al actualizar un producto Copy",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo actualizar el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Borrar producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado 200 or 204\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Error al borrar un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/819e7da4-96f4-4c45-81fc-1e5416544598",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"819e7da4-96f4-4c45-81fc-1e5416544598"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe un producto con ese id\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Borrar un producto que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"No existe un producto con ese id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/productos/{{id_producto_que_no_existe}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto_que_no_existe}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Error al borrar un producto que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/productos/{{id_producto_que_no_existe}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto_que_no_existe}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\": \"Recurso no encontrado\",\r\n    \"message\": \"No existe una categoria con ese id\"\r\n}"
+				},
+				{
+					"name": "Error Interno al actualizar un producto Copy 2",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/productos/{{id_producto_que_no_existe}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto_que_no_existe}}"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"Error en el servicio\",\r\n    \"message\":\"No se pudo borrar el recurso debido a un error del servidor.\"\r\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:3000/api/v1"
+		},
+		{
+			"key": "id_producto_que_no_existe",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		}
+	]
+}

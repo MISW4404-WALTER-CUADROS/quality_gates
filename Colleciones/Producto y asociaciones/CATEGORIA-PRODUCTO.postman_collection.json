@@ -1,0 +1,1116 @@
+{
+	"info": {
+		"_postman_id": "41f68f20-280a-406d-b8a2-cc09bcb3fae6",
+		"name": "CATEGORIA-PRODUCTO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29491980"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()\r",
+							"pm.globals.set(\"token\", data.token);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/usuarios/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"usuarios",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "200"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"c8-cm1ho4H7tPdrPkWRdy+lWteZErU\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 14 Sep 2024 22:07:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJyb2xlcyI6WyJhZG1pbiJdLCJpYXQiOjE3MjYzNTE2NTYsImV4cCI6MTcyNjM1ODg1Nn0.PKeLsf6GLq-H8HBdXxmxeBtjtVkM44Z5CBbXBXAdQ9g\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Agregar una categoria a un producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();\r",
+							"pm.globals.set(\"id_categoria_asociada\", data.categoria);\r",
+							"\r",
+							"pm.test(\"El código de estado es 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El producto tiene una categoría asociada\", function () {\r",
+							"    pm.expect(data).to.have.property('categoria');\r",
+							"    pm.expect(data.categoria).to.not.be.empty;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categoriaId\": \"0d7d86c8-b747-492c-b150-92f9ce68fdb3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto}}",
+						"categorias"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Agregar una categoria a un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoriaId\": \"0d7d86c8-b747-492c-b150-92f9ce68fdb3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"id\": \"fab9416c-1635-4761-ac42-cae00695eb5f\",\r\n    \"nombre\": \"Arroz444\",\r\n    \"descripcion\": \"444El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"categoria\": \"0d7d86c8-b747-492c-b150-92f9ce68fdb3\"\r\n}"
+				},
+				{
+					"name": "Falla al agregar una receta a una cultura",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoriaId\": \"0d7d86c8-b747-492c-b150-92f9ce68fdb3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\n}"
+				},
+				{
+					"name": "Falla autenticacion agregar una categoria a un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"No autorizado\",\r\n    \"message\":\"El token de autenticación es incorrecto\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Agregar una categoria a un producto que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"No existe un producto con ese id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categoriaId\": \"0d7d86c8-b747-492c-b150-92f9ce68fdb3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/productos/{{id_producto_que_no_existe}}/categorias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto_que_no_existe}}",
+						"categorias"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Agregar una categoria a un producto que no existe",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto_que_no_existe}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto_que_no_existe}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"statusCode\": 404,\r\n    \"message\": \"No existe un producto con ese id\"\r\n}"
+				},
+				{
+					"name": "Falla al agregar una categoria a un producto que no existe",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto_que_no_existe}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto_que_no_existe}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\n}"
+				},
+				{
+					"name": "Falla autenticacion agregar una receta a una cultura que no existe",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto_que_no_existe}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto_que_no_existe}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"No autorizado\",\r\n    \"message\":\"El token de autenticación es incorrecto\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Agregar una categoria que no existe a un producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 400\", function () {\r",
+							"   pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"La categoría no existe\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categoriaId\": \"00000000-0000-0000-0000-000000000000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto}}",
+						"categorias"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Agregar una categoria que no existe a un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoriaId\": \"00000000-0000-0000-0000-000000000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"statusCode\": 404,\r\n    \"message\": \"The recipe with the given id was not found\"\r\n}"
+				},
+				{
+					"name": "Falla al agregar una receta que no existe a una cultura",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoriaId\": \"00000000-0000-0000-0000-000000000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\n}"
+				},
+				{
+					"name": "Falla autenticacion agregar una receta que no existe a una cultura",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoriaId\": \"00000000-0000-0000-0000-000000000000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"401 Unauthorized\",\r\n    \"message\":\"Authentication token is missing or invalid\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener categoria de un producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene 'id', 'nombre' e 'historia'\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData).to.have.property('nombre');\r",
+							"    pm.expect(jsonData).to.have.property('historia');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El 'id' del producto es correcto\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(pm.variables.get(\"id_producto\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El campo 'nombre' no está vacío\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.nombre).to.not.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto}}",
+						"categorias"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener categoria de un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"id\": \"fab9416c-1635-4761-ac42-cae00695eb5f\",\r\n    \"nombre\": \"Arroz444\",\r\n    \"descripcion\": \"444El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"categoria\": {\r\n        \"id\": \"0d7d86c8-b747-492c-b150-92f9ce68fdb3\",\r\n        \"nombre\": \"Grano\",\r\n        \"descripcion\": \"Los granos son alimentos esenciales en muchas culturas debido a su alto valor nutritivo y su capacidad para ser almacenados durante largos periodos. Incluyen variedades como el maíz, la avena, la cebada y muchos otros, que pueden ser utilizados en una amplia gama de productos alimenticios.\"\r\n    }\r\n}\r\n"
+				},
+				{
+					"name": "Falla al Obtener categoria de un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\n}"
+				},
+				{
+					"name": "Falla autenticacion obtener categoria de un producto",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"No autorizado\",\r\n    \"message\":\"El token de autenticación es incorrecto\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener una categoria de un producto que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Obtener mensaje de error\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"No existe un producto con ese id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/productos/{{id_producto_que_no_existe}}/categorias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto_que_no_existe}}",
+						"categorias"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener una categoria de un producto que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto_que_no_existe}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto_que_no_existe}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"statusCode\": 404,\r\n    \"message\": \"The culture with the given id was not found\"\r\n}"
+				},
+				{
+					"name": "Falla al Obtener una categoria de un producto que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto_que_no_existe}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto_que_no_existe}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\n}"
+				},
+				{
+					"name": "Falla autenticacion Obtener una categoria de un producto que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto_que_no_existe}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto_que_no_existe}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"No autorizado\",\r\n    \"message\":\"El token de autenticación es incorrecto\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar una categoria de un producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado 200 or 204\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\r",
+							"});\r",
+							"pm.test(\"El campo categoria es null\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.categoria).to.be.null;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"productos",
+						"{{id_producto}}",
+						"categorias"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar una categoria de un producto",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 204,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"id\": \"fab9416c-1635-4761-ac42-cae00695eb5f\",\r\n    \"nombre\": \"Arroz444\",\r\n    \"descripcion\": \"444El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"categoria\": null\r\n}"
+				},
+				{
+					"name": "Falla al eliminar una categoria de un producto",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\n}"
+				},
+				{
+					"name": "Falla autenticacion al eliminar una categoria de un producto",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/productos/{{id_producto}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{id_producto}}",
+								"categorias"
+							]
+						}
+					},
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"error\":\"No autorizado\",\r\n    \"message\":\"El token de autenticación es incorrecto\"\r\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "id_categoria",
+			"value": "0d7d86c8-b747-492c-b150-92f9ce68fdb3",
+			"type": "string"
+		},
+		{
+			"key": "id_categoria_que_no_existe",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		},
+		{
+			"key": "id_producto",
+			"value": "fab9416c-1635-4761-ac42-cae00695eb5f",
+			"type": "string"
+		},
+		{
+			"key": "id_producto_que_no_existe",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		}
+	]
+}

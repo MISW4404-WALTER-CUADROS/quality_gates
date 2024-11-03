@@ -1,0 +1,1395 @@
+{
+	"info": {
+		"_postman_id": "5af17636-012d-42cc-ab2e-0116864f4f57",
+		"name": "CULTURA - RECETA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29491980"
+	},
+	"item": [
+		{
+			"name": "Operaciones cultura / recetas",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json()",
+									"pm.globals.set(\"token\", data.token);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"   pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"admin\",\n    \"password\":\"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar una receta a una cultura",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createRecetaUrl = 'localhost:3000/api/v1/recetas'; \r",
+									"const createCulturaUrl = 'localhost:3000/api/v1/culturas'; \r",
+									"\r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"\r",
+									"\r",
+									"const culturaPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: createCulturaUrl,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Authorization': 'Bearer ' + token,\r",
+									"        'Content-Type': 'application/json',\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(culturaPayload)\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    if (err) {\r",
+									"        console.error('Error al crear la receta:', err);\r",
+									"    } else {\r",
+									"        const culturaId = response.json().id; \r",
+									"        console.log('Receta creada con ID:', culturaId);\r",
+									"        pm.globals.set('culturaId', culturaId);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"\r",
+									"for (let i = 0; i < 2; i++) {\r",
+									"    const recetaPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        foto:  escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        proceso: escapeJSON(pm.variables.replaceIn('{{$randomLoremParagraphs}}')),\r",
+									"        video: escapeJSON(pm.variables.replaceIn('{{$randomUrl}}'))\r",
+									"    }\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: createRecetaUrl,\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Authorization': 'Bearer ' + token,\r",
+									"            'Content-Type': 'application/json',\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(recetaPayload)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error('Error al crear la receta:', err);\r",
+									"        } else {\r",
+									"            const recetaId = response.json().id; \r",
+									"            console.log('Receta creado con ID:', recetaId);\r",
+									"            pm.globals.set(`recetaId${i}`, recetaId);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"   pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"culturas",
+								"{{culturaId}}",
+								"recetas"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar un producto a una receta",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"culturas",
+										"{{culturaId}}",
+										"recetas"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1875"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"753-fN8dKMWjPq2PSru9ue2hLTJUkOs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 17:52:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"fca4b954-a6e1-4c17-ad53-66df53c4de65\",\n    \"nombre\": \"online parsing payment B2B orange\",\n    \"descripcion\": \"http://placeimg.com/640/480\",\n    \"recetas\": [\n        {\n            \"id\": \"9f4c58c4-e0be-4a82-9d63-5554a70f654c\",\n            \"nombre\": \"Ball connecting deposit benchmark\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"foto\": \"http://placeimg.com/640/480\",\n            \"proceso\": \"Distinctio voluptatum officiis eum in dolorum. Id enim omnis sunt natus nostrum distinctio. Magni vel et dicta. Dolor suscipit unde et.\\\\n \\\\rQui omnis placeat sed id. Aspernatur dolor laborum qui. Fuga qui consequuntur rerum. Minima consequuntur at. Non rem est. Ducimus possimus et iure.\\\\n \\\\rVero vel et. Aliquam magnam odio commodi deleniti. Qui doloremque ad modi. Ex consequatur quidem et sequi minima tempore quidem eum. Delectus at corrupti est quasi ut qui nihil. At voluptate voluptatem illo voluptate.\",\n            \"video\": \"https://enola.com\"\n        },\n        {\n            \"id\": \"2ead71a0-8744-40cb-af18-c4139542e74c\",\n            \"nombre\": \"Pizza application\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"foto\": \"http://placeimg.com/640/480\",\n            \"proceso\": \"Sed est porro nulla suscipit facere quibusdam ducimus. Suscipit unde sint reprehenderit labore est enim quisquam omnis quia. Hic ut aspernatur vel expedita ut. Molestias aut atque sed perspiciatis voluptate ea. Magni aspernatur odio velit non adipisci natus repellendus aliquam.\\\\n \\\\rCum optio ut atque cupiditate. Omnis rerum laboriosam voluptate sit voluptatem ea eos sint. Nemo at fugit. Voluptatem nisi ipsam cum nostrum. Reiciendis hic quas quas sed ut beatae quos sed. Ipsa blanditiis quidem non aut vero.\\\\n \\\\rVoluptatem officiis perspiciatis assumenda earum ut doloremque quos. Exercitationem quasi recusandae vitae vel eos. Ut dolorem odio nam. Aut voluptatum exercitationem odit dolore maxime cumque. Recusandae aut quisquam sed sapiente ut sit voluptatum ut facere. Praesentium nesciunt odio.\",\n            \"video\": \"https://robbie.biz\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Agregar una receta que no existe a una cultura",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"Algunas de las recetas existe\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recetasId\": [\"edba0abd-b7b5-4317-b428-944777344b21\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"culturas",
+								"{{culturaId}}",
+								"recetas"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar un producto que no existe a una receta",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recetasId\": [\"edba0abd-b7b5-4317-b428-944777344b21\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"culturas",
+										"{{culturaId}}",
+										"recetas"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "60"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3c-LeEKNxViGt1t2zWW5Za/B+K9EvQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 17:54:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"Algunas de las recetas existe\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Agregar una receta a una cultura que no existe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createRecetaUrl = 'localhost:3000/api/v1/recetas'; \r",
+									"const createCulturaUrl = 'localhost:3000/api/v1/culturas'; \r",
+									"\r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"\r",
+									"\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"\r",
+									"for (let i = 0; i < 2; i++) {\r",
+									"    const recetaPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        foto:  escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        proceso: escapeJSON(pm.variables.replaceIn('{{$randomLoremParagraphs}}')),\r",
+									"        video: escapeJSON(pm.variables.replaceIn('{{$randomUrl}}'))\r",
+									"    }\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: createRecetaUrl,\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Authorization': 'Bearer ' + token,\r",
+									"            'Content-Type': 'application/json',\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(recetaPayload)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error('Error al crear la receta:', err);\r",
+									"        } else {\r",
+									"            const recetaId = response.json().id; \r",
+									"            console.log('Receta creado con ID:', recetaId);\r",
+									"            pm.globals.set(`recetaId${i}`, recetaId);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"La cultura ingresada no existe\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/culturas/{{id_cultura_fail}}/recetas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"culturas",
+								"{{id_cultura_fail}}",
+								"recetas"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar una receta a una cultura que no existe",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/culturas/{{id_cultura_fail}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"culturas",
+										"{{id_cultura_fail}}",
+										"recetas"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "61"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3d-yVXVsCUZHOanY282/nqOR5aRQco\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 18:01:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"La cultura ingresada no existe\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener todas las recetas de una cultura",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"culturas",
+								"{{culturaId}}",
+								"recetas"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener todas las recetas de una cultura",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"culturas",
+										"{{culturaId}}",
+										"recetas"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "3398"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d46-zcZBU21jZDrtdHnmQx3llUcXhGs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 18:02:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"fca4b954-a6e1-4c17-ad53-66df53c4de65\",\n    \"nombre\": \"online parsing payment B2B orange\",\n    \"descripcion\": \"http://placeimg.com/640/480\",\n    \"recetas\": [\n        {\n            \"id\": \"9f4c58c4-e0be-4a82-9d63-5554a70f654c\",\n            \"nombre\": \"Ball connecting deposit benchmark\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"foto\": \"http://placeimg.com/640/480\",\n            \"proceso\": \"Distinctio voluptatum officiis eum in dolorum. Id enim omnis sunt natus nostrum distinctio. Magni vel et dicta. Dolor suscipit unde et.\\\\n \\\\rQui omnis placeat sed id. Aspernatur dolor laborum qui. Fuga qui consequuntur rerum. Minima consequuntur at. Non rem est. Ducimus possimus et iure.\\\\n \\\\rVero vel et. Aliquam magnam odio commodi deleniti. Qui doloremque ad modi. Ex consequatur quidem et sequi minima tempore quidem eum. Delectus at corrupti est quasi ut qui nihil. At voluptate voluptatem illo voluptate.\",\n            \"video\": \"https://enola.com\"\n        },\n        {\n            \"id\": \"2ead71a0-8744-40cb-af18-c4139542e74c\",\n            \"nombre\": \"Pizza application\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"foto\": \"http://placeimg.com/640/480\",\n            \"proceso\": \"Sed est porro nulla suscipit facere quibusdam ducimus. Suscipit unde sint reprehenderit labore est enim quisquam omnis quia. Hic ut aspernatur vel expedita ut. Molestias aut atque sed perspiciatis voluptate ea. Magni aspernatur odio velit non adipisci natus repellendus aliquam.\\\\n \\\\rCum optio ut atque cupiditate. Omnis rerum laboriosam voluptate sit voluptatem ea eos sint. Nemo at fugit. Voluptatem nisi ipsam cum nostrum. Reiciendis hic quas quas sed ut beatae quos sed. Ipsa blanditiis quidem non aut vero.\\\\n \\\\rVoluptatem officiis perspiciatis assumenda earum ut doloremque quos. Exercitationem quasi recusandae vitae vel eos. Ut dolorem odio nam. Aut voluptatum exercitationem odit dolore maxime cumque. Recusandae aut quisquam sed sapiente ut sit voluptatum ut facere. Praesentium nesciunt odio.\",\n            \"video\": \"https://robbie.biz\"\n        },\n        {\n            \"id\": \"dcc5e562-778b-4b64-ad4c-6a29973d130f\",\n            \"nombre\": \"hard France Fiji efficient Concrete\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"foto\": \"http://placeimg.com/640/480\",\n            \"proceso\": \"Quos quia error repudiandae id dolores tempore qui quibusdam iste. Perspiciatis deleniti similique architecto est velit voluptas facere et exercitationem. Veniam facere voluptatem aperiam sed officia aut. Sunt occaecati beatae. Maxime dolor officia voluptatem dolore dignissimos ipsa.\\\\n \\\\rDebitis libero dolores velit. Voluptatem id ut repellat veritatis velit qui. Consequatur amet non in. Aut qui aut.\\\\n \\\\rTenetur non molestiae quis accusantium. Inventore totam corrupti qui dolor iusto. Accusamus odit doloribus quo minima ut labore sed totam et.\",\n            \"video\": \"https://ophelia.org\"\n        },\n        {\n            \"id\": \"588d3ff4-5f96-4aff-9539-071e9fe9ef71\",\n            \"nombre\": \"emulation Coves\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"foto\": \"http://placeimg.com/640/480\",\n            \"proceso\": \"Ut quia eum. Est recusandae ut iure nihil excepturi dolorem non et commodi. Architecto minima iste. Ab eos cupiditate est qui quis est nostrum. Occaecati iste ut pariatur et culpa laborum. Modi accusantium occaecati perferendis cum.\\\\n \\\\rExpedita odio reprehenderit sit aut unde. Incidunt laudantium deserunt animi est culpa quas. Magnam illo et et eum debitis rerum.\\\\n \\\\rUt sint corporis. Consequuntur architecto voluptatem debitis aliquam voluptatem. Recusandae voluptatibus beatae voluptas excepturi culpa. Ea doloremque error totam ut molestias et.\",\n            \"video\": \"https://reymundo.com\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar las recetas de una cultura",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createRecetaUrl = 'localhost:3000/api/v1/recetas'; \r",
+									"const createCulturaUrl = 'localhost:3000/api/v1/culturas'; \r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"\r",
+									"for (let i = 0; i < 2; i++) {\r",
+									"    const recetaPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        foto:  escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        proceso: escapeJSON(pm.variables.replaceIn('{{$randomLoremParagraphs}}')),\r",
+									"        video: escapeJSON(pm.variables.replaceIn('{{$randomUrl}}'))\r",
+									"    }\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: createRecetaUrl,\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Authorization': 'Bearer ' + token,\r",
+									"            'Content-Type': 'application/json',\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(recetaPayload)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error('Error al crear la receta:', err);\r",
+									"        } else {\r",
+									"            const recetaId = response.json().id; \r",
+									"            console.log('Receta creado con ID:', recetaId);\r",
+									"            pm.globals.set(`recetaId${i}`, recetaId);\r",
+									"        }\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"culturas",
+								"{{culturaId}}",
+								"recetas"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Actualizar las recetas de una cultura",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"culturas",
+										"{{culturaId}}",
+										"recetas"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1733"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6c5-TSTpymrXGfqkcpKTbUpG3UZe1N8\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 18:35:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"fca4b954-a6e1-4c17-ad53-66df53c4de65\",\n    \"nombre\": \"online parsing payment B2B orange\",\n    \"descripcion\": \"http://placeimg.com/640/480\",\n    \"recetas\": [\n        {\n            \"id\": \"74bf74b7-04aa-4e4b-8c28-115caa38aa66\",\n            \"nombre\": \"Analyst Strategist\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"foto\": \"http://placeimg.com/640/480\",\n            \"proceso\": \"Porro sed consequatur cum dolore ex dolores. Quis minus est ad officiis odio. Itaque maiores delectus aspernatur id et. Optio ut beatae voluptatem tenetur distinctio.\\\\n \\\\rSoluta quo occaecati et cupiditate rerum. Assumenda sequi reprehenderit impedit assumenda natus ab et. Eum autem distinctio commodi voluptatum voluptas velit et.\\\\n \\\\rQui similique facere. Non odio et. Vel facilis et officiis hic molestias molestiae accusamus odio.\",\n            \"video\": \"http://elroy.name\"\n        },\n        {\n            \"id\": \"e64414b5-575b-4ae4-b1ba-d62257c174d7\",\n            \"nombre\": \"programming Cambridgeshire of and Account\",\n            \"descripcion\": \"http://placeimg.com/640/480\",\n            \"foto\": \"http://placeimg.com/640/480\",\n            \"proceso\": \"Labore nisi et omnis est quo. Deleniti et minima. Illo et sit. Aut consequatur doloribus ut autem non illo architecto. Cupiditate minus cumque corporis laborum sapiente.\\\\n \\\\rNecessitatibus consequatur mollitia id quis sit et accusamus laboriosam et. Aut sit aliquid perferendis repellendus veritatis nobis sapiente sunt autem. Quis ea quisquam non perspiciatis mollitia eligendi labore. Quis laudantium quibusdam. Repellat quia velit non. Aliquam voluptatem et odio hic quidem alias et.\\\\n \\\\rOmnis beatae ut itaque ipsum. Suscipit reprehenderit deserunt dolore odio recusandae. Cum tenetur rem distinctio voluptates dolor consequuntur suscipit sit. Qui est sunt non unde nesciunt voluptas deserunt labore. Maxime sit omnis.\",\n            \"video\": \"https://devonte.info\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar una receta que no existe de una cultura",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"Algunas de las recetas existe\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recetasId\": [\"edba0abd-b7b5-4317-b428-944777344b21\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"culturas",
+								"{{culturaId}}",
+								"recetas"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar una receta que no existe a una cultura Copy",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recetasId\": [\"edba0abd-b7b5-4317-b428-944777344b21\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/culturas/{{culturaId}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"culturas",
+										"{{culturaId}}",
+										"recetas"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "60"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3c-LeEKNxViGt1t2zWW5Za/B+K9EvQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 18:36:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"Algunas de las recetas existe\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar las recetas de una cultura que no existe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createRecetaUrl = 'localhost:3000/api/v1/recetas'; \r",
+									"const createCulturaUrl = 'localhost:3000/api/v1/culturas'; \r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"\r",
+									"for (let i = 0; i < 2; i++) {\r",
+									"    const recetaPayload = {\r",
+									"        nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"        descripcion: escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        foto:  escapeJSON(pm.variables.replaceIn('{{$randomImageUrl}}')),\r",
+									"        proceso: escapeJSON(pm.variables.replaceIn('{{$randomLoremParagraphs}}')),\r",
+									"        video: escapeJSON(pm.variables.replaceIn('{{$randomUrl}}'))\r",
+									"    }\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: createRecetaUrl,\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Authorization': 'Bearer ' + token,\r",
+									"            'Content-Type': 'application/json',\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(recetaPayload)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error('Error al crear la receta:', err);\r",
+									"        } else {\r",
+									"            const recetaId = response.json().id; \r",
+									"            console.log('Receta creado con ID:', recetaId);\r",
+									"            pm.globals.set(`recetaId${i}`, recetaId);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"La cultura ingresada no existe\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/culturas/{{id_cultura_fail}}/recetas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"culturas",
+								"{{id_cultura_fail}}",
+								"recetas"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar una receta a una cultura que no existe Copy",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/culturas/{{id_cultura_fail}}/recetas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"culturas",
+										"{{id_cultura_fail}}",
+										"recetas"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "61"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3d-yVXVsCUZHOanY282/nqOR5aRQco\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 18:38:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"La cultura ingresada no existe\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar una receta de una cultura",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/culturas/{{culturaId}}/recetas/{{recetaId0}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"culturas",
+								"{{culturaId}}",
+								"recetas",
+								"{{recetaId0}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Eliminar un producto de una receta",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/culturas/{{culturaId}}/recetas/{{recetaId0}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"culturas",
+										"{{culturaId}}",
+										"recetas",
+										"{{recetaId0}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 19:02:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Eliminar una receta de una cultura que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(\"La cultura ingresada no existe\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/culturas/{{id_cultura_fail}}/recetas/{{recetaId0}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"culturas",
+								"{{id_cultura_fail}}",
+								"recetas",
+								"{{recetaId0}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Eliminar un producto de una receta que no existe",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/culturas/{{id_cultura_fail}}/recetas/{{recetaId0}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"culturas",
+										"{{id_cultura_fail}}",
+										"recetas",
+										"{{recetaId0}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "61"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3d-yVXVsCUZHOanY282/nqOR5aRQco\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 19:03:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 404,\n    \"message\": \"La cultura ingresada no existe\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "id_cultura_fail",
+			"value": "fca4b954-a6e1-4c17-ad53-66df53c4de68",
+			"type": "string"
+		},
+		{
+			"key": "id_receta_fail",
+			"value": "2f542657-8b65-406c-9928-9a47b997b3ef",
+			"type": "string"
+		}
+	]
+}

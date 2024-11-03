@@ -1,0 +1,1231 @@
+{
+	"info": {
+		"_postman_id": "a6c9144a-8101-41bb-b52e-3c65b80805b4",
+		"name": "RESTAURANTE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26687890",
+		"_collection_link": "https://sw-nube-uniandes.postman.co/workspace/API_DESING~1ceaa319-19e1-42dc-95c1-95d7b35a019a/collection/26687890-a6c9144a-8101-41bb-b52e-3c65b80805b4?action=share&source=collection_link&creator=26687890"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()\r",
+							"pm.globals.set(\"token\", data.token);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/usuarios/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"usuarios",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "200"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"c8-cm1ho4H7tPdrPkWRdy+lWteZErU\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 14 Sep 2024 22:07:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwic3ViIjoxLCJyb2xlcyI6WyJhZG1pbiJdLCJpYXQiOjE3MjYzNTE2NTYsImV4cCI6MTcyNjM1ODg1Nn0.PKeLsf6GLq-H8HBdXxmxeBtjtVkM44Z5CBbXBXAdQ9g\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear restaurante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {",
+							"    pm.expect(pm.response.code).to.equal(201);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Fecha de consecución de estrellas tiene el formato correcto\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.fechasConsecucionEstrellas).to.match(/^\\d{4}-\\d{2}-\\d{2}$/); // Formato YYYY-MM-DD",
+							"});",
+							"",
+							"pm.test(\"Campo estrellas está en el rango correcto\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.estrellas).to.be.within(1, 5);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(400);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"",
+							"// Asegúrate de que la respuesta contiene el campo 'id'",
+							"if (response.id) {",
+							"    // Guarda el 'id' en una variable de entorno",
+							"    pm.collectionVariables.set(\"id_restaurante\", response.id);",
+							"    console.log(\"ID del restaurante guardado:\", response.id);",
+							"} else {",
+							"    console.error(\"ID no encontrado en la respuesta.\");",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Mcdonalds\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": \"2023-01-01\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/restaurantes",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"restaurantes"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear restaurante - Éxito",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Restaurante El Gourmet\",\n  \"descripcion\": \"Un restaurante elegante con platos gourmet\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": [\"2023-01-01\"],\n  \"ciudad\": {\n    \"id\": 1\n  },\n  \"culturasGastronomicas\": [\n    {\n      \"id\": 1\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurantes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes"
+							]
+						}
+					},
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"id\": 1,\n  \"nombre\": \"Restaurante El Gourmet\",\n  \"descripcion\": \"Un restaurante elegante con platos gourmet\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": \"2023-01-01\",\n}"
+				},
+				{
+					"name": "Crear restaurante - Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Restaurante El Gourmet\",\n  \"descripcion\": \"Un restaurante elegante con platos gourmet\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": [\"2023-01-01\"],\n  \"ciudad\": {\n    \"id\": 9999\n  },\n  \"culturasGastronomicas\": [\n    {\n      \"id\": 9999\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurantes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes"
+							]
+						}
+					},
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"error\": \"Ciudad o cultura gastronómica no válida\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Listar restaurantes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response fields have correct data types\", function () {",
+							"    const responseData = pm.response.json();",
+							"    responseData.forEach(item => {",
+							"        pm.expect(item.id).to.be.a('string');",
+							"        pm.expect(item.nombre).to.be.a('string');",
+							"        pm.expect(item.estrellas).to.be.a('string'); // Considerando que 'estrellas' es un string en la respuesta",
+							"        pm.expect(item.fechasConsecucionEstrellas).to.be.a('string');",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"All restaurant IDs are unique\", function () {",
+							"    const responseData = pm.response.json();",
+							"    const ids = responseData.map(item => item.id);",
+							"    const uniqueIds = new Set(ids);",
+							"    pm.expect(uniqueIds.size).to.equal(ids.length);",
+							"});",
+							"",
+							"pm.test(\"Campo estrellas está en el rango correcto\", function () {",
+							"    const responseData = pm.response.json();",
+							"    responseData.forEach(item => {",
+							"        pm.expect(parseInt(item.estrellas)).to.be.within(1, 5);",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Campo fechasConsecucionEstrellas tiene el formato correcto\", function () {",
+							"    const responseData = pm.response.json();",
+							"    responseData.forEach(item => {",
+							"        pm.expect(item.fechasConsecucionEstrellas).to.match(/^\\d{4}-\\d{2}-\\d{2}$/); // Formato YYYY-MM-DD",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(400);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/restaurantes",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"restaurantes"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Listar restaurantes - Éxito",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurantes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "[\n  {\n    \"id\": 1,\n    \"nombre\": \"Restaurante El Gourmet\",\n    \"descripcion\": \"Un restaurante elegante con platos gourmet\",\n    \"estrellas\": 5,\n    \"fechasConsecucionEstrellas\": [\"2023-01-01\"],\n    \"ciudad\": {\n      \"id\": 1\n    },\n    \"culturasGastronomicas\": [\n      {\n        \"id\": 1\n      }\n    ]\n  }\n]"
+				}
+			]
+		},
+		{
+			"name": "Obtener restaurante por id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('nombre');",
+							"    pm.expect(responseData).to.have.property('estrellas');",
+							"    pm.expect(responseData).to.have.property('fechasConsecucionEstrellas');",
+							"});",
+							"",
+							"pm.test(\"Campos tienen el tipo de datos correcto\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.id).to.be.a('string');",
+							"    pm.expect(responseData.nombre).to.be.a('string');",
+							"    pm.expect(responseData.estrellas).to.be.a('string'); // Según la respuesta",
+							"    pm.expect(responseData.fechasConsecucionEstrellas).to.be.a('string');",
+							"});",
+							"",
+							"pm.test(\"Campo fechasConsecucionEstrellas tiene el formato correcto\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.fechasConsecucionEstrellas).to.match(/^\\d{4}-\\d{2}-\\d{2}$/); // Formato YYYY-MM-DD",
+							"});",
+							"",
+							"pm.test(\"ID tiene la longitud correcta\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.id.length).to.equal(36); // Longitud típica de un UUID",
+							"});",
+							"",
+							"pm.test(\"La respuesta es un objeto\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('object');",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/restaurantes/{{id_restaurante}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{id_restaurante}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener restaurante por id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurantes/{{id_restaurante}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes",
+								"{{id_restaurante}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"nombre\": \"Restaurante El Gourmet\",\n    \"descripcion\": \"Un restaurante elegante con platos gourmet\",\n    \"estrellas\": 5,\n    \"fechasConsecucionEstrellas\":\"2023-01-01\",\n}"
+				},
+				{
+					"name": "Obtener restaurante por id -Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurantes/{{id_restaurante}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes",
+								"{{id_restaurante}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"error\": \"Restaurante no encontrado\"\n}\n"
+				}
+			]
+		},
+		{
+			"name": "Obtener un restaurante que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"    pm.expect(pm.response.code).to.equal(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - statusCode and message\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.statusCode).to.exist;",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate that the statusCode is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.statusCode).to.exist.and.to.be.a('number');",
+							"    pm.expect(responseData.statusCode).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Message is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+							"});",
+							"",
+							"pm.test(\"statusCode is exactly 404\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.statusCode).to.equal(404);",
+							"});",
+							"",
+							"pm.test(\"Response follows the expected error format\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.all.keys('statusCode', 'message');",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/restaurantes/{{id_restaurante_fail}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{id_restaurante_fail}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener un restaurante que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurantes/{{id_restaurante_fail}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes",
+								"{{id_restaurante_fail}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"error\": \"Restaurante no encontrado\",\n  \"message\": \"No se pudo encontrar un restaurante con el ID proporcionado.\"\n}\n"
+				}
+			]
+		},
+		{
+			"name": "Actualizar restaurante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.id).to.exist;",
+							"    pm.expect(responseData.nombre).to.exist;",
+							"    pm.expect(responseData.estrellas).to.exist;",
+							"    pm.expect(responseData.fechasConsecucionEstrellas).to.exist;",
+							"    ",
+							"});",
+							"",
+							"",
+							"pm.test(\"FechasConsecucionEstrellas is an string with at least one element\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.fechasConsecucionEstrellas).to.be.an('string')",
+							"});",
+							"",
+							"",
+							"pm.test(\"Id is a non-empty string and estrellas is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Id should be a non-empty string\");",
+							"    pm.expect(responseData.estrellas).to.be.a('number').and.to.be.at.least(0, \"Estrellas should be a non-negative integer\");",
+							"});",
+							"",
+							"pm.test(\"Nombre is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.nombre).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Nombre should be a non-empty string\");",
+							"});",
+							"",
+							"pm.test(\"Estrellas is a non-negative integer within expected range\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.estrellas).to.be.a('number').and.to.be.at.least(0, \"Estrellas should be a non-negative integer\");",
+							"    pm.expect(responseData.estrellas).to.be.below(6, \"Estrellas should be less than 6\"); // Asumiendo que el rango de estrellas es de 0 a 5",
+							"});",
+							"",
+							"pm.test(\"FechasConsecucionEstrellas is in valid date format (YYYY-MM-DD)\", function () {",
+							"    const responseData = pm.response.json();",
+							"    const datePattern = /^\\d{4}-\\d{2}-\\d{2}$/; // Formato YYYY-MM-DD",
+							"    ",
+							"    pm.expect(responseData.fechasConsecucionEstrellas).to.match(datePattern, \"Fecha should be in YYYY-MM-DD format\");",
+							"});",
+							"pm.test(\"Response structure is as expected\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object').that.includes.all.keys('id', 'nombre', 'estrellas', 'fechasConsecucionEstrellas');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Restaurante mcdonalds\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": \"2023-01-01\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/restaurantes/{{id_restaurante}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{id_restaurante}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar restaurante - Éxito",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Restaurante El Gourmet Deluxe\",\n  \"descripcion\": \"Un restaurante elegante con platos gourmet actualizados\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": [\"2023-01-01\", \"2024-01-01\"],\n  \"ciudad\": {\n    \"id\": 1\n  },\n  \"culturasGastronomicas\": [\n    {\n      \"id\": 1\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurantes/{{id_restaurante}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes",
+								"{{id_restaurante}}"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"id\": 1,\n  \"nombre\": \"Restaurante El Gourmet Deluxe\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": [\"2023-01-01\", \"2024-01-01\"],\n}"
+				},
+				{
+					"name": "Actualizar restaurante - Error",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Restaurante Inexistente\",\n  \"descripcion\": \"Descripción\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": [\"2023-01-01\"],\n  \"ciudad\": {\n    \"id\": 1\n  },\n  \"culturasGastronomicas\": [\n    {\n      \"id\": 1\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/restaurantes/{{id_restaurante}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes",
+								"{{id_restaurante}}"
+							]
+						}
+					},
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"error\": \"Restaurante no encontrado\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar restaurante que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"    pm.expect(pm.response.code).to.equal(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - statusCode and message\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.statusCode).to.exist;",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is within an acceptable range\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Response structure is as expected\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('object').that.includes.all.keys('statusCode', 'message');",
+							"});",
+							"",
+							"pm.test(\"statusCode is a number and message is a string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.statusCode).to.be.a('number');",
+							"    pm.expect(responseData.message).to.be.a('string');",
+							"});",
+							"",
+							"pm.test(\"Response does not contain unexpected fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.not.have.any.keys('unexpectedField1', 'unexpectedField2'); // Reemplaza con campos no esperados si los hay",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Restaurante  Gourmet\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": \"2023-01-01\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/restaurantes/{{id_restaurante_fail}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{id_restaurante_fail}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar restaurante que no existe",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Restaurante  Gourmet\",\n  \"descripcion\": \"Un restaurante elegante con platos gourmet actualizados\",\n  \"estrellas\": 5,\n  \"fechasConsecucionEstrellas\": [\"2023-01-01\", \"2024-01-01\"],\n  \"ciudad\": {\n    \"id\": 1\n  },\n  \"culturasGastronomicas\": [\n    {\n      \"id\": 1\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recetas/{{id_restaurante_fail}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recetas",
+								"{{id_restaurante_fail}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"not_found\",\n    \"message\": \"No se encontró ningún restaurante con el id proporcionado.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar restaurante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Response body matches the expected schema for a successful deletion\", function () {",
+							"    const responseData = xml2Json(pm.response.text());",
+							"    ",
+							"    pm.expect(responseData).to.be.null;",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/restaurantes/{{id_restaurante}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{id_restaurante}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar restaurante - Éxito",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurantes/{{id_restaurante}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes",
+								"{{id_restaurante}}"
+							]
+						}
+					},
+					"code": 204,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Eliminar restaurante - Error",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurantes/{{id_restaurante}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes",
+								"{{id_restaurante}}"
+							]
+						}
+					},
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"error\": \"Restaurante no encontrado\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar restaurante que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"    pm.expect(pm.response.code).to.equal(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 300ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - statusCode and message\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.statusCode).to.exist;",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Status code is a non-negative integer\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.statusCode).to.be.a('number');",
+							"  pm.expect(responseData.statusCode).to.be.at.least(0, \"Status code should be a non-negative integer\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Message is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/restaurantes/{{id_restaurante_fail}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"restaurantes",
+						"{{id_restaurante_fail}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar restaurante que no existe",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/restaurantes/{{id_restaurantes_fail}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"restaurantes",
+								"{{id_restaurantes_fail}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"error\": \"not_found\",\n  \"message\": \"No se encontró ningún restaurante con el id proporcionado.\"\n}\n"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "id_restaurante",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "id_restaurante_fail",
+			"value": "0c10c9a9-54c4-4719-951e-7142282ccda5",
+			"type": "string"
+		}
+	]
+}

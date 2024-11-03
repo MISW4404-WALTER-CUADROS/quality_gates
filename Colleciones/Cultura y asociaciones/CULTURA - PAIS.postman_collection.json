@@ -1,0 +1,819 @@
+{
+	"info": {
+		"_postman_id": "f438ae81-87a2-4bd5-91c2-a3f78e510ae8",
+		"name": "CULTURA GASTRONOMICA - PAIS1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26687890",
+		"_collection_link": "https://www.postman.com/sw-nube-uniandes/workspace/api-desing/collection/26687890-f438ae81-87a2-4bd5-91c2-a3f78e510ae8?action=share&source=collection_link&creator=26687890"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"token\", data.token);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"admin\",\n    \"password\":\"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/usuarios/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"usuarios",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar un pais a una cultura",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paisIds\": [\"{{paisId}}\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{culturaId}}/paises",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{culturaId}}",
+						"paises"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Agregar un pais a una cultura",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/{{id_culturaGastronomica}}/paises/{{id_pais}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"{{id_culturaGastronomica}}",
+								"paises",
+								"{{id_pais}}"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"id\": \"1\",\r\n    \"nombre\": \"Nueva Cultura Gastronómica\",\r\n    \"descripcion\": \"Descripción de la nueva cultura\",\r\n    \"pais\": {\r\n        \"id\": \"1\",\r\n        \"nombre\": \"Colombia\"\r\n        }\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Agregar un pais a una cultura inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"const paisId = pm.variables.get(\"paisId\");\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"if (paisId) {\r",
+							"  const id = paisId;  \r",
+							"  pm.test(`Get expected error message`, function() {\r",
+							"    if (response.error) {\r",
+							"      pm.expect(response.message).to.include(`The culture with the given id ${id} was not found`);\r",
+							"    }\r",
+							"  });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"paisIds\": [\"53c65852-db00-4eae-ad7b-a99b88c626fe\"] \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{paisId}}/paises",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{paisId}}",
+						"paises"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Agregar un pais a una cultura inexistente",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/12-44/paises/{{id_pais}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"12-44",
+								"paises",
+								"{{id_pais}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n   \"statusCode\": 404,\n   \"message\": \"La cultura con el ID 12-44 no fue encontrado\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener pais de una cultura",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});\r",
+							"// Add a test to check for response time being lower than 200ms\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{culturaId}}/paises",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{culturaId}}",
+						"paises"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener pais de una cultura",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/{{id_culturaGastronomica}}/paises/{{id_pais}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"{{id_culturaGastronomica}}",
+								"paises",
+								"{{id_pais}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"1\",\n    \"nombre\": \"Colombia\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener pais de una cultura inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"const paisId = pm.variables.get(\"paisId\");\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"if (paisId) {\r",
+							"  const id = paisId;  \r",
+							"  pm.test(`Get expected error message`, function() {\r",
+							"    if (response.error) {\r",
+							"      pm.expect(response.message).to.include(`The culture with the given id ${id} was not found`);\r",
+							"    }\r",
+							"  });\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{paisId}}/paises",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{paisId}}",
+						"paises"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener pais de una cultura inexistente",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/12-44/paises/{{id_pais}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"12-44",
+								"paises",
+								"{{id_pais}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"La cultura con el ID 12-44 no fue encontrado\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar un pais de una cultura",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paisIds\": [\"{{paisId}}\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{culturaId}}/paises/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{culturaId}}",
+						"paises",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar un pais de una cultura",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cultura\": \"e2cc30ae-e7bf-4890-8034-d654715584b7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/{{id_culturaGastronomica}}/paises/{{id_pais}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"{{id_culturaGastronomica}}",
+								"paises",
+								"{{id_pais}}"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"1\",\n    \"nombre\": \"Nueva Cultura Gastronómica\",\n    \"descripcion\": \"Descripción de la nueva cultura\",\n    \"pais\": {\n        \"id\": \"1\",\n        \"nombre\": \"Colombia\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar un pais de una cultura inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"const paisId = pm.variables.get(\"paisId\");\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"if (paisId) {\r",
+							"  const id = paisId;  \r",
+							"  pm.test(`Get expected error message`, function() {\r",
+							"    if (response.error) {\r",
+							"      pm.expect(response.message).to.include(`The culture with the given id ${id} was not found`);\r",
+							"    }\r",
+							"  });\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paisIds\": [\"{{paisId}}\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{paisId}}/paises",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{paisId}}",
+						"paises"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar un pais de una cultura inexistente",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/12-44/paises/{{id_pais}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"12-44",
+								"paises",
+								"{{id_pais}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n   \"statusCode\": 404,\r\n   \"message\": \"La cultura con el ID 12-44 no fue encontrado\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar pais de una cultura",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"   pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{culturaId}}/paises/{{paisId}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{culturaId}}",
+						"paises",
+						"{{paisId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar pais de una cultura",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/{{id_culturaGastronomica}}/paises/{{id_pais}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"{{id_culturaGastronomica}}",
+								"paises",
+								"{{id_pais}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Eliminar pais de una cultura inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"const paisId = pm.variables.get(\"paisId\");\r",
+							"\r",
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"if (paisId) {\r",
+							"  const id = paisId;  \r",
+							"  pm.test(`Get expected error message`, function() {\r",
+							"    if (response.error) {\r",
+							"      pm.expect(response.message).to.include(`The culture with the given id ${id} was not found`);\r",
+							"    }\r",
+							"  });\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{paisId}}/paises/{{paisId}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{paisId}}",
+						"paises",
+						"{{paisId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar pais de una cultura inexistente",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/12-44/paises/{{id_pais}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"12-44",
+								"paises",
+								"{{id_pais}}"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n   \"statusCode\": 404,\r\n   \"message\": \"La cultura con el ID 12-44 no fue encontrado\"\r\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "culturaId",
+			"value": "33bf04f4-1368-45a4-8b44-b52df1c3c9ee"
+		},
+		{
+			"key": "paisId",
+			"value": "19e7b133-db76-499c-bb62-fedf258258a0"
+		},
+		{
+			"key": "baseURL",
+			"value": "localhost:3000/api/v1",
+			"type": "string"
+		}
+	]
+}

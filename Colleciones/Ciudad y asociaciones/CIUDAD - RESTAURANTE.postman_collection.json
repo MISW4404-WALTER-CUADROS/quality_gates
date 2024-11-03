@@ -1,0 +1,879 @@
+{
+	"info": {
+		"_postman_id": "4a0fae00-0a4b-42c0-a2f1-7d23a92c571b",
+		"name": "CIUDAD - RESTAURANTE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29491980"
+	},
+	"item": [
+		{
+			"name": "Operaciones Ciudad - Restaurante",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json()",
+									"pm.globals.set(\"token\", data.token);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"   pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"admin\",\n    \"password\":\"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar un restaurante a una ciudad",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const createCiudadtaUrl = 'localhost:3000/api/v1/ciudades'; \r",
+									"const createRestauranteUrl = 'localhost:3000/api/v1/restaurantes'; \r",
+									"\r",
+									"var token = pm.environment.get(\"token\") || pm.globals.get(\"token\");\r",
+									"\r",
+									"\r",
+									"const escapeJSON = (str) => {\r",
+									"    if (!str) return '';\r",
+									"    return str\r",
+									"        .replace(/\\\\/g, '\\\\\\\\') // Escapa las barras invertidas\r",
+									"        .replace(/\"/g, '\\\\\"')   // Escapa las comillas dobles\r",
+									"        .replace(/\\n/g, '\\\\n')  // Escapa los saltos de línea\r",
+									"        .replace(/\\r/g, '\\\\r'); // Escapa los retornos de carro\r",
+									"};\r",
+									"\r",
+									"console.log(\"Bearer\"+ pm.globals.get('token'))\r",
+									"\r",
+									"const ciudadPayload = {\r",
+									"    nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}'))\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: createCiudadtaUrl,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Authorization': 'Bearer ' + token,\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(ciudadPayload)\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    if (err) {\r",
+									"        console.error('Error al crear la ciudad:', err);\r",
+									"    } else {\r",
+									"        const ciudadId = response.json().id; \r",
+									"        console.log('Ciudad creada con ID:', ciudadId);\r",
+									"        pm.globals.set('ciudadId', ciudadId);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"const restaurantePayload = {\r",
+									"    nombre: escapeJSON(pm.variables.replaceIn('{{$randomWords}}')),\r",
+									"    estrellas: 5,\r",
+									"    fechasConsecucionEstrellas: \"2023-01-01\",\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: createRestauranteUrl,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Authorization': 'Bearer ' + token,\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(restaurantePayload)\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    if (err) {\r",
+									"        console.error('Error al crear el restaurante:', err);\r",
+									"    } else {\r",
+									"        const restauranteId = response.json().id; \r",
+									"        console.log('Restaurante creado con ID:', restauranteId);\r",
+									"        pm.globals.set(`restauranteId`, restauranteId);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"   pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/ciudades/{{ciudadId}}/restaurantes/{{restauranteId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ciudades",
+								"{{ciudadId}}",
+								"restaurantes",
+								"{{restauranteId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar una receta a una cultura",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/v1/ciudades/dfdf0a84-4a88-41f1-9809-ea7744d62818/restaurantes/72353a06-c342-4da5-9c4a-4d4b91575473",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"ciudades",
+										"dfdf0a84-4a88-41f1-9809-ea7744d62818",
+										"restaurantes",
+										"72353a06-c342-4da5-9c4a-4d4b91575473"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "222"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"de-LSBjT37LGUMrEMZnKKw2YSYHMH4\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 19:26:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"23ab3169-7f92-42c5-af7c-a3ecc5506d33\",\n    \"nombre\": \"Borders virtual\",\n    \"restaurantes\": [\n        {\n            \"id\": \"e280761e-4814-4f54-bec4-e511f15fba74\",\n            \"nombre\": \"Pizza programming\",\n            \"estrellas\": \"5\",\n            \"fechasConsecucionEstrellas\": \"2023-01-01\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Agregar un restaurante que no existe a una ciudad",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(`Restaurante con ID 2f542657-8b65-406c-9928-9a47b997b3ef no encontrado`);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/ciudades/{{ciudadId}}/restaurantes/{{id_restaurante_fail}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ciudades",
+								"{{ciudadId}}",
+								"restaurantes",
+								"{{id_restaurante_fail}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar un restaurante que no existe a una ciudad",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/v1/ciudades/dfdf0a84-4a88-41f1-9809-ea7744d62818/restaurantes/2f542657-8b65-406c-9928-9a47b997b3ef",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"ciudades",
+										"dfdf0a84-4a88-41f1-9809-ea7744d62818",
+										"restaurantes",
+										"2f542657-8b65-406c-9928-9a47b997b3ef"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "120"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"78-jpBd1hq7ogovy1S7lYXCX/QQxHo\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 19:33:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Restaurante con ID 2f542657-8b65-406c-9928-9a47b997b3ef no encontrado\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "Agregar un restaurante a una ciudad que no existe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Get expected error message\", function () {\r",
+									"   var data = pm.response.json();\r",
+									"   pm.expect(data.message).to.eql(`Ciudad con ID fca4b954-a6e1-4c17-ad53-66df53c4de68 no encontrada`);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/ciudades/{{id_ciudad_fail}}/restaurantes/{{restauranteId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ciudades",
+								"{{id_ciudad_fail}}",
+								"restaurantes",
+								"{{restauranteId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Agregar un restaurante que no existe a una ciudad Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recetasId\": [\"{{recetaId0}}\",\"{{recetaId1}}\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/v1/ciudades/fca4b954-a6e1-4c17-ad53-66df53c4de68/restaurantes/72353a06-c342-4da5-9c4a-4d4b91575473",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"ciudades",
+										"fca4b954-a6e1-4c17-ad53-66df53c4de68",
+										"restaurantes",
+										"72353a06-c342-4da5-9c4a-4d4b91575473"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "115"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"73-wVOgH+XIBpNexHXAj8Xg7itf+Zg\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 19:33:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Ciudad con ID fca4b954-a6e1-4c17-ad53-66df53c4de68 no encontrada\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener todos los restaurantes de una ciudad",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ciudades/{{ciudadId}}/restaurantes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ciudades",
+								"{{ciudadId}}",
+								"restaurantes"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener todos los restaurantes de una ciudad",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/v1/ciudades/dfdf0a84-4a88-41f1-9809-ea7744d62818/restaurantes",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"ciudades",
+										"dfdf0a84-4a88-41f1-9809-ea7744d62818",
+										"restaurantes"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "134"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"86-04xUsWUzU2ROjIIYyF/NAWOlDVs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 19:36:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"e280761e-4814-4f54-bec4-e511f15fba74\",\n        \"nombre\": \"Pizza programming\",\n        \"estrellas\": \"5\",\n        \"fechasConsecucionEstrellas\": \"2023-01-01\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Eliminar un restaurante de una ciudad",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"   pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ciudades/{{ciudadId}}/restaurantes/{{restauranteId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ciudades",
+								"{{ciudadId}}",
+								"restaurantes",
+								"{{restauranteId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Eliminar un restaurante de una ciudad",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/v1/ciudades/dfdf0a84-4a88-41f1-9809-ea7744d62818/restaurantes/72353a06-c342-4da5-9c4a-4d4b91575473",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"ciudades",
+										"dfdf0a84-4a88-41f1-9809-ea7744d62818",
+										"restaurantes",
+										"72353a06-c342-4da5-9c4a-4d4b91575473"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "136"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"88-UnXMDucWwMhKZ+axd9NFvc2WH3o\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 19:45:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Restaurante con ID e96b7269-1df6-47fe-a9d2-5ea1ffc03c80 eliminado de la ciudad con ID 4e69050b-9ae1-4f1b-882c-221d598bec0b\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar un restaurante de una ciudad que no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"   pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ciudades/{{id_ciudad_fail}}/restaurantes/{{restauranteId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ciudades",
+								"{{id_ciudad_fail}}",
+								"restaurantes",
+								"{{restauranteId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Eliminar un restaurante de una ciudad que no existe",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/ciudades/{{id_ciudad_fail}}/restaurantes/{{restauranteId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"ciudades",
+										"{{id_ciudad_fail}}",
+										"restaurantes",
+										"{{restauranteId}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "115"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"73-wVOgH+XIBpNexHXAj8Xg7itf+Zg\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 08 Sep 2024 19:40:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Ciudad con ID fca4b954-a6e1-4c17-ad53-66df53c4de68 no encontrada\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "id_ciudad_fail",
+			"value": "fca4b954-a6e1-4c17-ad53-66df53c4de68",
+			"type": "string"
+		},
+		{
+			"key": "id_restaurante_fail",
+			"value": "2f542657-8b65-406c-9928-9a47b997b3ef",
+			"type": "string"
+		}
+	]
+}

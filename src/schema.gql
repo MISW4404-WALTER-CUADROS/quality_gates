@@ -1,0 +1,190 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Categoria {
+  id: String!
+  nombre: String!
+  descripcion: String!
+  productos: [Producto!]!
+}
+
+type Producto {
+  id: String!
+  nombre: String!
+  descripcion: String!
+  historia: String!
+  categoria: String!
+  recetas: [Receta!]!
+  cultura: Cultura!
+}
+
+type Receta {
+  id: String!
+  nombre: String!
+  descripcion: String!
+  foto: String!
+  proceso: String!
+  video: String!
+  cultura: Cultura!
+  productos: [Producto!]!
+}
+
+type Pais {
+  id: String!
+  nombre: String!
+  ciudades: [Ciudad!]
+  culturas: [Cultura!]
+}
+
+type Ciudad {
+  id: String!
+  nombre: String!
+  restaurantes: [Restaurante!]
+  idPais: [Pais!]
+}
+
+type Restaurante {
+  id: String!
+  nombre: String!
+  estrellas: Float!
+  fechasConsecucionEstrellas: DateTime!
+  culturas: [Cultura!]
+  idCiudad: Ciudad
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Cultura {
+  id: String!
+  nombre: String!
+  descripcion: String!
+  paises: [Pais!]
+  restaurantes: [Restaurante!]
+  recetas: [Receta!]
+}
+
+type Query {
+  culturas: [Cultura!]!
+  cultura(id: String!): Cultura!
+  getRecetasByCultura(culturaId: String!): [Receta!]!
+  getRecetaByCultura(culturaId: String!, recetaId: String!): Receta!
+  obtenerPaisesDeCultura(culturaId: String!): Cultura!
+  obtenerRestaurantesDeCultura(culturaId: String!): Cultura!
+  recetas: [Receta!]!
+  receta(id: String!): Receta!
+  getProductosByReceta(recetaId: String!): [Producto!]!
+  getProductoByReceta(recetaId: String!, productoId: String!): Producto!
+  categorias: [Categoria!]!
+  categoria(id: String!): Categoria!
+  productos: [Producto!]!
+  producto(id: String!): Producto!
+  categoriaDeProducto(id: String!): Producto!
+  restaurantes: [Restaurante!]!
+  restaurante: Restaurante!
+  ciudades: [Ciudad!]!
+  ciudad(id: String!): Ciudad!
+  getRestaurantesByCiudad(id: String!): [Ciudad!]!
+  paises: [Pais!]!
+  pais(id: String!): Pais!
+}
+
+type Mutation {
+  createCultura(createCulturaDto: CreateCulturaDto!): Cultura!
+  updateCultura(id: String!, updateCulturaDto: UpdateCulturaDto!): Cultura!
+  removeCultura(id: String!): Boolean!
+  agregarRecetasACultura(id: String!, recetasId: [String!]!): Cultura!
+  updateRecetaEnCulturas(id: String!, recetasId: [String!]!): Cultura!
+  removeRecetaFromCultura(culturaId: String!, recetaId: String!): Cultura!
+  agregarPaisesACultura(id: String!, paisesId: [String!]!): Cultura!
+  updatePaisesEnCulturas(id: String!, paisesId: [String!]!): Cultura!
+  removePaisesFromCultura(culturaId: String!, paisesId: String!): Cultura!
+  agregarRestaurantesACultura(id: String!, restaurantesId: [String!]!): Cultura!
+  updateRestaurantesEnCulturas(id: String!, restaurantesId: [String!]!): Cultura!
+  removeRestaurantesFromCultura(culturaId: String!, restauranteId: String!): Cultura!
+  createReceta(receta: CreateRecetaDto!): Receta!
+  updateReceta(id: String!, receta: CreateRecetaDto!): Receta!
+  deleteReceta(id: String!): String!
+  agregarProductoAReceta(id: String!, productosIds: [String!]!): Receta!
+  updateProductosEnReceta(id: String!, productosIds: [String!]!): Receta!
+  removeProductoFromReceta(recetaId: String!, productoId: String!): Receta!
+  createCategoria(categoria: CreateCategoriaDto!): Categoria!
+  updateCategoria(id: String!, categoria: UpdateCategoriaDto!): Categoria!
+  deleteCategoria(id: String!): String!
+  createProducto(producto: CreateProductoDto!): Producto!
+  updateProducto(id: String!, producto: UpdateProductoDto!): Producto!
+  deleteProducto(id: String!): String!
+  agregarCategoriaAProducto(productoId: String!): Producto!
+  actualizarCategoriaEnProductos(productoId: String!): Producto!
+  eliminarCategoriaDeProducto(productoId: String!): String!
+  createRestaurante(restaurante: CreateRestauranteDto!): Restaurante!
+  updateRestaurante(id: String!, restaurante: CreateRestauranteDto!): Restaurante!
+  deleteRestaurante(id: String!): String!
+  createCiudad(ciudad: CreateCiudadDto!): Ciudad!
+  updateCiudad(id: String!, ciudad: CreateCiudadDto!): Ciudad!
+  deleteCiudad(id: String!): Ciudad!
+  agregarRestauranteACiudad(id: String!, restauranteId: String!): Ciudad!
+  removeRestauranteDeCiudad(id: String!, restauranteId: String!): Ciudad!
+  createPais(pais: CreatePaisDto!): Pais!
+  updatePais(id: String!, pais: CreatePaisDto!): Pais!
+  deletePais(id: String!): String!
+}
+
+input CreateCulturaDto {
+  nombre: String!
+  descripcion: String!
+}
+
+input UpdateCulturaDto {
+  nombre: String
+  descripcion: String
+}
+
+input CreateRecetaDto {
+  nombre: String!
+  descripcion: String!
+  foto: String!
+  proceso: String!
+  video: String!
+}
+
+input CreateCategoriaDto {
+  nombre: String!
+  descripcion: String!
+}
+
+input UpdateCategoriaDto {
+  nombre: String!
+  descripcion: String!
+}
+
+input CreateProductoDto {
+  nombre: String!
+  descripcion: String!
+  historia: String!
+  categoria: String!
+}
+
+input UpdateProductoDto {
+  nombre: String!
+  descripcion: String!
+  historia: String!
+  categoria: String!
+}
+
+input CreateRestauranteDto {
+  nombre: String!
+  estrellas: Float!
+  fechasConsecucionEstrellas: DateTime!
+}
+
+input CreateCiudadDto {
+  nombre: String!
+}
+
+input CreatePaisDto {
+  nombre: String!
+}

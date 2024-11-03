@@ -1,0 +1,1326 @@
+{
+	"info": {
+		"_postman_id": "2d0a1e7d-80b8-4f83-a01b-d709db08284e",
+		"name": "CULTURA - PRODUCTO1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29550126"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()",
+							"pm.globals.set(\"token\", data.token);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"admin\",\n    \"password\":\"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/usuarios/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"usuarios",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Añadir una cultura",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Obtén la respuesta en formato JSON\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"// ID está en response.id\r",
+							"const cultureId = response.id;\r",
+							"\r",
+							"// Almacena el ID en una variable de colección llamada \"id\"\r",
+							"pm.collectionVariables.set(\"id\", cultureId);\r",
+							"pm.globals.set(\"culturaId\", cultureId);\r",
+							"\r",
+							"\r",
+							"var data = pm.response.json()\r",
+							"pm.globals.set(\"id\", data.id);\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Nueva Cultura Gastronómica\",\r\n  \"descripcion\": \"Descripción de la nueva cultura\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/culturas",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Añadir una cultura",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Nueva Cultura Gastronómica\",\r\n  \"descripcion\": \"Descripción de la nueva cultura\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/culturasGastronomicas",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"culturasGastronomicas"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": "{\r\n    \"id\": \"1\",\r\n    \"nombre\": \"Nueva Cultura Gastronómica\",\r\n    \"descripcion\": \"Descripción de la nueva cultura\"\r\n}\r\n"
+				},
+				{
+					"name": "Campo invalido al crear una cultura",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Nueva Cultura Gastronómica\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/culturasGastronomicas",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"culturasGastronomicas"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": "{\r\n   \"statusCode\": 404,\r\n   \"message\": \"Faltan datos obligatorios o la cultura ya existe\"\r\n}"
+				},
+				{
+					"name": "Campo incompletos",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Nueva Cultura Gastronómica\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/culturasGastronomicas",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"culturasGastronomicas"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": "{\r\n   \"statusCode\": 400,\r\n   \"message\": \"Faltan datos obligatorios o el país ya existe\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear un producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json()\r",
+							"pm.globals.set(\"id_producto\", data.id);\r",
+							"\r",
+							"pm.test(\"201\", function () {\r",
+							"   pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El producto tiene 'id'\", function () {\r",
+							"    pm.response.to.have.property('id');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/productos",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"productos"
+					]
+				},
+				"description": "Crear una receta, dentro del cuerpo del request se incluyen los campos necesarios para crear una receta"
+			},
+			"response": [
+				{
+					"name": "Crear un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"819e7da4-96f4-4c45-81fc-1e5416544598\",\n    \"nombre\": \"Arroz\",\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\n}"
+				},
+				{
+					"name": "Error al crear un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120005\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Recurso no encontrado\",\n    \"message\": \"No existe un producto con ese id\"\n}"
+				},
+				{
+					"name": "Error al crear un producto con categoria que no existe",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120005\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Recurso no encontrado\",\n    \"message\": \"No existe una categoria con ese id\"\n}"
+				},
+				{
+					"name": "Error interno en la creación de un producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Arroz\",\r\n    \"descripcion\": \"El arroz es un cereal básico en la dieta de muchas culturas alrededor del mundo. Es conocido por su versatilidad en la cocina, pudiéndose preparar en una amplia variedad de platos, desde acompañamientos hasta platillos principales.\",\r\n    \"historia\": \"El arroz ha sido cultivado durante más de 8,000 años, con orígenes en Asia. A lo largo de la historia, ha sido un alimento esencial para diversas civilizaciones, especialmente en Asia, donde sigue siendo un alimento primordial en la dieta diaria.\",\r\n    \"idCategoria\": \"14f05d0e-1275-11ed-861d-0242ac120003\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/productos",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\":\"Error en el servicio\",\n    \"message\":\"No se pudo obtener el recurso debido a un error del servidor.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Agregar un producto a una cultura",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"",
+							"pm.test(\"Response status code is 201\", function () {",
+							"    pm.expect(pm.response.code).to.equal(201);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id, nombre, descripcion\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.id).to.exist;",
+							"    pm.expect(responseData.nombre).to.exist;",
+							"    pm.expect(responseData.descripcion).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response includes an array of 'productos' with at least one element\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.productos).to.exist.and.to.be.an('array').that.is.not.empty;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Each 'productos' object has the required fields\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData.productos).to.be.an('array');",
+							"  responseData.productos.forEach(function(producto) {",
+							"    pm.expect(producto.id).to.be.a('string').and.to.not.be.empty;",
+							"    pm.expect(producto.nombre).to.be.a('string').and.to.not.be.empty;",
+							"    pm.expect(producto.descripcion).to.be.a('string').and.to.not.be.empty;",
+							"    pm.expect(producto.historia).to.be.a('string').and.to.not.be.empty;",
+							"  });",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{id}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{id}}",
+						"productos",
+						"{{id_producto}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Agregar un producto a una cultura",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/33bf04f4-1368-45a4-8b44-b52df1c3c9ee/productos/762a2656-a493-4ca1-acce-b8e056b511b7",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"33bf04f4-1368-45a4-8b44-b52df1c3c9ee",
+								"productos",
+								"762a2656-a493-4ca1-acce-b8e056b511b7"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"id\": \"1\",\r\n    \"nombre\": \"Nueva Cultura Gastronómica\",\r\n    \"descripcion\": \"Descripción de la nueva cultura\",\r\n    \"productos\":[\r\n            {\r\n            \"id\":\"819e7da4-96f4-4c45-81fc-1e5416544598\",\r\n            \"nombre\":\"Mariscos\", \r\n            \"descripcion\":\"Producto usado en platos de alta cocina\"\r\n            }, \r\n            {\r\n            \"id\":\"a4178cd4-dc0e-4f99-8b9d-617e8a3d257f\",\r\n            \"nombre\":\"Pimiento\",\r\n            \"descripcion\":\"Producto usado en platos de alta cocina\"\r\n            }\r\n        ]\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Agregar un producto a una cultura inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"    pm.expect(pm.response.code).to.equal(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - statusCode and message\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('statusCode');",
+							"    pm.expect(responseData).to.have.property('message');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response content type is application/json\", function () {",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{id_cultura_fail}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{id_cultura_fail}}",
+						"productos",
+						"{{id_producto}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Agregar un producto a una cultura inexistente",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/12-44/productos/762a2656-a493-4ca1-acce-b8e056b511b7",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"12-44",
+								"productos",
+								"762a2656-a493-4ca1-acce-b8e056b511b7"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n   \"statusCode\": 404,\n   \"message\": \"La cultura con el ID 12-44 no fue encontrado\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener producto de una cultura",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id, nombre, descripcion, and historia\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.id).to.exist;",
+							"    pm.expect(responseData.nombre).to.exist;",
+							"    pm.expect(responseData.descripcion).to.exist;",
+							"    pm.expect(responseData.historia).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Id and nombre should be non-empty strings\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Id should be a non-empty string\");",
+							"    pm.expect(responseData.nombre).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Nombre should be a non-empty string\");",
+							"    pm.expect(responseData.descripcion).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Descripcion should be a non-empty string\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{id}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{id}}",
+						"productos",
+						"{{id_producto}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener producto de una cultura",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/33bf04f4-1368-45a4-8b44-b52df1c3c9ee/productos/762a2656-a493-4ca1-acce-b8e056b511b7",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"33bf04f4-1368-45a4-8b44-b52df1c3c9ee",
+								"productos",
+								"762a2656-a493-4ca1-acce-b8e056b511b7"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\":\"819e7da4-96f4-4c45-81fc-1e5416544598\",\n    \"nombre\":\"Mariscos\", \n    \"descripcion\":\"Producto usado en platos de alta cocina\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener producto de una cultura inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"    pm.expect(pm.response.code).to.equal(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - statusCode and message\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('statusCode');",
+							"    pm.expect(responseData).to.have.property('message');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{id_cultura_fail}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{id_cultura_fail}}",
+						"productos",
+						"{{id_producto}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener productos de una cultura inexistente",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/12-44/productos/762a2656-a493-4ca1-acce-b8e056b511b7",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"12-44",
+								"productos",
+								"762a2656-a493-4ca1-acce-b8e056b511b7"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"La cultura con el ID 12-44 no fue encontrado\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar un producto de una cultura",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.id).to.exist;",
+							"    pm.expect(responseData.nombre).to.exist;",
+							"    pm.expect(responseData.descripcion).to.exist;",
+							"    pm.expect(responseData.productos).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate the schema of the productos array objects\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData.productos).to.be.an('array');",
+							"    responseData.productos.forEach(function(producto) {",
+							"        pm.expect(producto).to.be.an('object');",
+							"        pm.expect(producto.id).to.be.a('string');",
+							"        pm.expect(producto.nombre).to.be.a('string');",
+							"        pm.expect(producto.descripcion).to.be.a('string');",
+							"        pm.expect(producto.historia).to.be.a('string');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is in an acceptable range\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productosIds\": [\"e2cc30ae-e7bf-4890-8034-d654715584b7\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{id}}/productos",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{id}}",
+						"productos"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar un pais de una cultura",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cultura\": \"e2cc30ae-e7bf-4890-8034-d654715584b7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/33bf04f4-1368-45a4-8b44-b52df1c3c9ee/productos/762a2656-a493-4ca1-acce-b8e056b511b7",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"33bf04f4-1368-45a4-8b44-b52df1c3c9ee",
+								"productos",
+								"762a2656-a493-4ca1-acce-b8e056b511b7"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"1\",\n    \"nombre\": \"Nueva Cultura Gastronómica\",\n    \"descripcion\": \"Descripción de la nueva cultura\",\n    \"productos\":[\n            {\n            \"id\":\"819e7da4-96f4-4c45-81fc-1e5416544598\",\n            \"nombre\":\"Mariscos\", \n            \"descripcion\":\"Producto usado en platos de alta cocina\"\n            }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar un producto de una cultura inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"    pm.expect(pm.response.code).to.equal(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - statusCode and message\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('statusCode');",
+							"    pm.expect(responseData).to.have.property('message');",
+							"});",
+							"",
+							"",
+							"pm.test(\"StatusCode is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.statusCode).to.be.a('number');",
+							"    pm.expect(responseData.statusCode).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Message is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.message).to.be.a('string').and.to.have.length.above(0, \"Message should be a non-empty string\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productosIds\": [\"e2cc30ae-e7bf-4890-8034-d654715584b7\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{id_cultura_fail}}/productos",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{id_cultura_fail}}",
+						"productos"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar un pais de una cultura inexistente",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/12-44/productos/762a2656-a493-4ca1-acce-b8e056b511b7",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"12-44",
+								"productos",
+								"762a2656-a493-4ca1-acce-b8e056b511b7"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n   \"statusCode\": 404,\r\n   \"message\": \"La cultura con el ID 12-44 no fue encontrado\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar producto de una cultura",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Estado 412 or 204\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([412, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{id}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{id}}",
+						"productos",
+						"{{id_producto}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar producto de una cultura",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/33bf04f4-1368-45a4-8b44-b52df1c3c9ee/productos/762a2656-a493-4ca1-acce-b8e056b511b7",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"33bf04f4-1368-45a4-8b44-b52df1c3c9ee",
+								"productos",
+								"762a2656-a493-4ca1-acce-b8e056b511b7"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Eliminar producto de una cultura inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"    pm.expect(pm.response.code).to.equal(404);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - statusCode and message\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('statusCode');",
+							"    pm.expect(responseData).to.have.property('message');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is within an acceptable range\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/culturas/{{id_cultura_fail}}/productos/{{id_producto}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"culturas",
+						"{{id_cultura_fail}}",
+						"productos",
+						"{{id_producto}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar producto de una cultura inexistente",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/v1/culturasGastronomicas/12-44/productos/762a2656-a493-4ca1-acce-b8e056b511b7",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"culturasGastronomicas",
+								"12-44",
+								"productos",
+								"762a2656-a493-4ca1-acce-b8e056b511b7"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n   \"statusCode\": 404,\r\n   \"message\": \"La cultura con el ID 12-44 no fue encontrado\"\r\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "id_cultura_fail",
+			"value": "33bf04f4-1368-45a4-8b44-b52df1c3c9ae",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": ""
+		}
+	]
+}
